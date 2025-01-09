@@ -1,0 +1,63 @@
+namespace MyEngine;
+
+public class Node
+{
+    protected List<Node> Children;
+    protected Node Parent;
+    
+    public bool IsRoot
+        => Parent == this;
+
+    protected Node()
+    {
+        Children = new();
+        Parent = this;
+    }
+
+    public static Node CreateRootNode()
+        => new Node();
+    
+    public bool HasChild(Node child)
+        => Children.Contains(child);
+    
+    public void DetachChild(Node child)
+    {
+        if (child == this)
+            return;
+        
+        child.Parent = child;
+        Children.Remove(child);
+    }
+
+    public void Orphan()
+        => Parent.DetachChild(this);
+    
+    public Node AdoptChild(Node child)
+    {
+        child.Orphan();
+        child.Parent = this;
+        Children.Add(child);
+        
+        return child;
+    }
+    
+    public void UpdateTree()
+    {
+        if (!IsRoot)
+            return;
+        
+        Queue<Node> updateQueue = new();
+        updateQueue.Enqueue(this);
+
+        while (updateQueue.Any())
+        {
+            Node updating = updateQueue.Dequeue();
+
+            updateQueue.Enqueue(updating.Children);
+            updating.Update();
+        }
+    }
+    
+    protected virtual void Update()
+    { }
+}
