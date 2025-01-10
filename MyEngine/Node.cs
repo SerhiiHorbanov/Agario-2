@@ -1,3 +1,5 @@
+using SFML.Graphics;
+
 namespace MyEngine;
 
 public class Node
@@ -57,6 +59,26 @@ public class Node
             updating.Update();
         }
     }
+    
+    public void RenderTree(RenderTarget target)
+    {
+        Render(target);
+        foreach (Node child in Children)
+            child.RenderTree(target);
+    }
+    
+    public void ProcessInputTree()
+    {
+        ProcessInput();
+        foreach (Node child in Children)
+            child.ProcessInputTree();
+    }
+    
+    protected virtual void Render(RenderTarget target)
+    { }
+    
+    protected virtual void ProcessInput()
+    { }
     
     protected virtual void Update()
     { }
