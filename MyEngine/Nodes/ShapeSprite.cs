@@ -3,10 +3,6 @@ using SFML.System;
 
 namespace MyEngine.Nodes;
 
-using CircleSprite = ShapeSprite<CircleShape>;
-using RectangleSprite = ShapeSprite<CircleShape>;
-using ConvexSprite = ShapeSprite<CircleShape>;
-    
 public class ShapeSprite<T> : Node where T : Shape
 { 
     public readonly T UnderlyingShape;
