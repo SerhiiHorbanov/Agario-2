@@ -1,6 +1,6 @@
 using SFML.Graphics;
 
-namespace MyEngine;
+namespace MyEngine.Nodes;
 
 public class Node
 {
