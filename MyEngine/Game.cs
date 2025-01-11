@@ -21,7 +21,7 @@ public abstract class Game
 
     private void Initialization()
     {
-        Root = Node.CreateRootNode();
+        Root = Node.CreateNode();
         Window = new RenderWindow(new(900, 900), "Window");
         
         GameSpecificInitialization();

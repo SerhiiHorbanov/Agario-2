@@ -16,11 +16,25 @@ public class Node
         Parent = this;
     }
 
-    public static Node CreateRootNode()
+    public static Node CreateNode()
         => new Node();
+
+    public Node CreateChildNode()
+        => AdoptChild(CreateNode());
     
     public bool HasChild(Node child)
         => Children.Contains(child);
+
+    public T? GetDescendantOfType<T>() where T : Node
+    {
+        foreach (Node decendant in Children)
+        {
+            if (decendant is T result)
+                return result;
+        }
+
+        return null;
+    }
     
     public void DetachChild(Node child)
     {
