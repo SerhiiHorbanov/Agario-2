@@ -25,16 +25,19 @@ public class Node
     public bool HasChild(Node child)
         => Children.Contains(child);
 
-    public T? GetDescendantOfType<T>() where T : Node
+    public T? GetChildOfType<T>() where T : Node
     {
-        foreach (Node decendant in Children)
+        foreach (Node child in Children)
         {
-            if (decendant is T result)
+            if (child is T result)
                 return result;
         }
 
         return null;
     }
+
+    public T? GetSiblingOfType<T>() where T : Node
+        => Parent.GetChildOfType<T>();    
     
     public void DetachChild(Node child)
     {
