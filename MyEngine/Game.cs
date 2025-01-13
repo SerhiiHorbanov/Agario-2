@@ -24,6 +24,7 @@ public abstract class Game
     {
         Root = Node.CreateNode();
         Window = new RenderWindow(new(900, 900), "Window");
+        Window.Closed += (sender, args) => Window.Close();
         
         GameSpecificInitialization();
     }
