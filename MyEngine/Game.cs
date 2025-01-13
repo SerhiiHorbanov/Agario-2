@@ -1,4 +1,4 @@
-﻿using SFML.Graphics;
+using SFML.Graphics;
 using MyEngine.Nodes;
 
 namespace MyEngine;
@@ -10,7 +10,7 @@ public abstract class Game
     
     public void Run()
     {
-        GameSpecificInitialization();
+        Initialization();
         
         while (ContinueGame())
         {
