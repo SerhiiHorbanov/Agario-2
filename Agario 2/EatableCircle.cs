@@ -20,7 +20,11 @@ public class EatableCircle : Node
     public float Radius
     {
         get => _sprite.UnderlyingShape.Radius;
-        set => _sprite.UnderlyingShape.Radius = value;
+        set
+        {
+            _sprite.UnderlyingShape.Radius = value;   
+            _sprite.UnderlyingShape.Origin = new(value, value);
+        }
     }
 
     public static EatableCircle CreateEatableCircle(float radius, Vector2f position)
@@ -28,6 +32,7 @@ public class EatableCircle : Node
         EatableCircle result = new();
 
         result._sprite = new ShapeSprite<CircleShape>(new CircleShape(radius));
+        result.Radius = radius;
         result.AdoptChild(result._sprite);
         result.Position = position;
         result.OnEaten += result.Orphan;
