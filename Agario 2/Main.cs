@@ -1,1 +1,1 @@
-﻿Console.WriteLine("Hello, World!");
+﻿new Agario_2.Agario().Run();
