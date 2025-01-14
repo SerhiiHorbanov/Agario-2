@@ -37,6 +37,7 @@ public class Camera : Node
     {
         Queue<Drawable> drawables = rootNode.GetRenderQueue(this);
 
+        _target.Clear(Color.Black);
         foreach (Drawable drawable in drawables)
             drawable.Draw(_target, RenderStates.Default);
     }
