@@ -8,6 +8,7 @@ namespace Agario_2;
 public class EatableCircle : Node
 {
     private ShapeSprite<CircleShape> _sprite; 
+    public Action OnEaten;
     
     public Vector2f Position
     {
@@ -27,6 +28,7 @@ public class EatableCircle : Node
         result._sprite = new ShapeSprite<CircleShape>(new CircleShape(radius));
         result.AdoptChild(result._sprite);
         result.Position = position;
+        result.OnEaten += result.Orphan;
 
         return result;
     }
@@ -41,7 +43,7 @@ public class EatableCircle : Node
     
     public float Eat()
     {
-        Orphan();
+        OnEaten();
         return Radius;
     }
 }
