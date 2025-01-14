@@ -122,7 +122,7 @@ public class Player : Node
         if (eatable.Radius >= Radius)
             return;
 
-        if (!eatable.Overlaps(_eatableCircle))
+        if (!_eatableCircle.Encloses(eatable))
             return;
 
         _eatableCircle.Radius += eatable.Eat() * (1 / float.Log2(Radius));

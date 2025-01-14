@@ -41,12 +41,14 @@ public class EatableCircle : Node
         return result;
     }
 
-    public bool Overlaps(EatableCircle other)
+    public bool Encloses(EatableCircle other)
     {
-        float radiusesSum = Radius + other.Radius;
-        float radiusesSumSquared = radiusesSum * radiusesSum;
+        float radiusSquared = Radius * Radius;
+        float otherRadiusSquared = other.Radius * other.Radius;
+
+        float distanceSquared = Position.SquaredDistanceTo(other.Position);
         
-        return Position.SquaredDistanceTo(other.Position) < radiusesSumSquared;
+        return distanceSquared + otherRadiusSquared < radiusSquared;
     }
     
     public float Eat()
