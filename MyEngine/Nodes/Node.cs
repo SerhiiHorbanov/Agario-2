@@ -4,14 +4,17 @@ namespace MyEngine.Nodes;
 
 public class Node
 {
-    protected List<Node> Children;
-    protected Node Parent;
+    public List<Node> Children;
+    public Node Parent;
+
+    private bool _toOrphan;
     
-    public bool IsRoot
+    private bool IsRoot
         => Parent == this;
 
     protected Node()
     {
+        _toOrphan = false;
         Children = new();
         Parent = this;
     }
@@ -49,11 +52,11 @@ public class Node
     }
 
     public void Orphan()
-        => Parent.DetachChild(this);
+        => _toOrphan = true;
     
     public Node AdoptChild(Node child)
     {
-        child.Orphan();
+        child.Parent.DetachChild(child);
         child.Parent = this;
         Children.Add(child);
         
@@ -72,8 +75,14 @@ public class Node
         {
             Node updating = updateQueue.Dequeue();
 
+            if (updating._toOrphan)
+            {
+                updating.Parent.DetachChild(updating);
+                continue;
+            }
+            
             updateQueue.Enqueue(updating.Children);
-            updating.Update();
+            updating.Update(this);
         }
     }
     
@@ -104,6 +113,6 @@ public class Node
     protected virtual void ProcessInput()
     { }
     
-    protected virtual void Update()
+    protected virtual void Update(Node root)
     { }
 }
