@@ -1,10 +1,11 @@
+using System.Collections;
 using SFML.Graphics;
 
 namespace MyEngine.Nodes;
 
-public class Node
+public class Node : IEnumerable<Node>
 {
-    public List<Node> Children;
+    private List<Node> _children;
     public Node Parent;
 
     private bool _toOrphan;
@@ -15,7 +16,7 @@ public class Node
     protected Node()
     {
         _toOrphan = false;
-        Children = new();
+        _children = new();
         Parent = this;
     }
 
@@ -26,11 +27,11 @@ public class Node
         => AdoptChild(CreateNode());
     
     public bool HasChild(Node child)
-        => Children.Contains(child);
+        => _children.Contains(child);
 
     public T? GetChildOfType<T>() where T : Node
     {
-        foreach (Node child in Children)
+        foreach (Node child in _children)
         {
             if (child is T result)
                 return result;
@@ -48,7 +49,7 @@ public class Node
             return;
         
         child.Parent = child;
-        Children.Remove(child);
+        _children.Remove(child);
     }
 
     public void Orphan()
@@ -58,7 +59,7 @@ public class Node
     {
         child.Parent.DetachChild(child);
         child.Parent = this;
-        Children.Add(child);
+        _children.Add(child);
         
         return child;
     }
@@ -81,7 +82,7 @@ public class Node
                 continue;
             }
             
-            updateQueue.Enqueue(updating.Children);
+            updateQueue.Enqueue(updating._children);
             updating.Update(this);
         }
     }
@@ -99,14 +100,14 @@ public class Node
         if (this is Drawable drawable)
             queue.Enqueue(drawable);
         
-        foreach (Node child in Children)
+        foreach (Node child in _children)
             child.AddThisAndChildrenToDrawableQueue(queue);
     }
     
     public void ProcessInputTree()
     {
         ProcessInput();
-        foreach (Node child in Children)
+        foreach (Node child in _children)
             child.ProcessInputTree();
     }
     
@@ -115,4 +116,10 @@ public class Node
     
     protected virtual void Update(Node root)
     { }
+
+    public IEnumerator<Node> GetEnumerator()
+        => _children.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator()
+        => _children.GetEnumerator();
 }
