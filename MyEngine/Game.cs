@@ -1,4 +1,4 @@
-using SFML.Graphics;
+﻿using SFML.Graphics;
 using MyEngine.Nodes;
 
 namespace MyEngine;
@@ -19,6 +19,7 @@ public abstract class Game
             Render();
             Input();
             Update();
+            Timing();
         }
     }
 
@@ -31,6 +32,8 @@ public abstract class Game
         
         CurrentCamera = Camera.CreateCamera(Window);
         Root.AdoptChild(CurrentCamera);
+        
+        FrameTiming.UpdateLastTimingTick();
         
         GameSpecificInitialization();
     }
@@ -48,10 +51,16 @@ public abstract class Game
 
     private void Input()
     {
+        MyEngine.Input.UpdateInput(Window);
         Window.DispatchEvents();
         Root.ProcessInputTree();
     }
 
     private void Update() 
         => Root.UpdateTree();
+
+    private void Timing()
+    {
+        FrameTiming.Timing();
+    }
 }
