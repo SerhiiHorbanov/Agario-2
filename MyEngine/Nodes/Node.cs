@@ -77,11 +77,21 @@ public class Node
         }
     }
     
-    public void RenderTree(RenderTarget target)
+    public Queue<Drawable> GetRenderQueue(Camera camera)
     {
-        Render(target);
+        Queue<Drawable> drawables = new();
+        AddThisAndChildrenToDrawableQueue(drawables);
+
+        return drawables;
+    }
+
+    private void AddThisAndChildrenToDrawableQueue(Queue<Drawable> queue)
+    {
+        if (this is Drawable drawable)
+            queue.Enqueue(drawable);
+        
         foreach (Node child in Children)
-            child.RenderTree(target);
+            child.AddThisAndChildrenToDrawableQueue(queue);
     }
     
     public void ProcessInputTree()
@@ -90,9 +100,6 @@ public class Node
         foreach (Node child in Children)
             child.ProcessInputTree();
     }
-    
-    protected virtual void Render(RenderTarget target)
-    { }
     
     protected virtual void ProcessInput()
     { }

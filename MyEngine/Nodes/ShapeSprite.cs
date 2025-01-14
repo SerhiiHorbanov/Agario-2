@@ -3,7 +3,7 @@ using SFML.System;
 
 namespace MyEngine.Nodes;
 
-public class ShapeSprite<T> : Node where T : Shape
+public class ShapeSprite<T> : Node, Drawable where T : Shape
 { 
     public readonly T UnderlyingShape;
 
@@ -15,7 +15,7 @@ public class ShapeSprite<T> : Node where T : Shape
         get => UnderlyingShape.Position;
         set => UnderlyingShape.Position = value;
     }
-
-    protected override void Render(RenderTarget target)
-        => UnderlyingShape.Draw(target, RenderStates.Default);
+    
+    public void Draw(RenderTarget target, RenderStates states)
+        => UnderlyingShape.Draw(target, states);
 }

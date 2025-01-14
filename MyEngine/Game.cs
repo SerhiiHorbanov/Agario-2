@@ -7,6 +7,8 @@ public abstract class Game
 {
     protected Node Root;
     protected RenderWindow Window;
+
+    protected Camera? CurrentCamera;
     
     public void Run()
     {
@@ -23,8 +25,12 @@ public abstract class Game
     private void Initialization()
     {
         Root = Node.CreateNode();
+        
         Window = new RenderWindow(new(900, 900), "Window");
         Window.Closed += (sender, args) => Window.Close();
+        
+        CurrentCamera = Camera.CreateCamera(Window);
+        Root.AdoptChild(CurrentCamera);
         
         GameSpecificInitialization();
     }
@@ -36,7 +42,7 @@ public abstract class Game
 
     private void Render()
     {
-        Root.RenderTree(Window);
+        CurrentCamera?.Render(Root);
         Window.Display();
     }
 
