@@ -9,6 +9,8 @@ public class EatableCircle : Node
 {
     private ShapeSprite<CircleShape> _sprite; 
     public Action OnEaten;
+
+    private static readonly Color[] Colors = new Color[] { Color.Blue, Color.Red, Color.Green, Color.Cyan, Color.Magenta, Color.Yellow };
     
     public Vector2f Position
     {
@@ -29,7 +31,8 @@ public class EatableCircle : Node
         result.AdoptChild(result._sprite);
         result.Position = position;
         result.OnEaten += result.Orphan;
-
+        result._sprite.FillColor = GetRandomColor();
+        
         return result;
     }
 
@@ -45,5 +48,10 @@ public class EatableCircle : Node
     {
         OnEaten();
         return Radius;
+    }
+
+    static Color GetRandomColor()
+    {
+        return Colors[Random.Shared.Next(Colors.Length)];
     }
 }
