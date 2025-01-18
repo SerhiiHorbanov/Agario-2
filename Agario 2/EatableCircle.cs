@@ -35,7 +35,6 @@ public class EatableCircle : Node
         result.Radius = radius;
         result.AdoptChild(result._sprite);
         result.Position = position;
-        result.OnEaten += result.Orphan;
         result._sprite.FillColor = GetRandomColor();
         
         return result;

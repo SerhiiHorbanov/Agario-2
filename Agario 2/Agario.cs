@@ -1,4 +1,5 @@
 using MyEngine;
+using SFML.Graphics;
 using SFML.System;
 
 namespace Agario_2;
@@ -6,17 +7,22 @@ namespace Agario_2;
 public class Agario : Game
 {
     private const int MapSize = 5000;
+    private static readonly FloatRect MapBounds = new FloatRect(0, 0, 5000, 5000);
+        
+    private const int AiPlayersAmount = 20;
+    private const int FoodAmount = 1000;
+    
     protected override void GameSpecificInitialization()
     {
         AddUserPlayer();
 
-        AddFood(1000);
-        AddAiPlayers(15);
+        Root.AdoptChild(FoodPool.CreateFoodPool(FoodAmount, MapBounds));
+        AddAiPlayers(AiPlayersAmount);
     }
 
     private void AddUserPlayer()
     {
-        Vector2f position = GetRandomPointInMap();
+        Vector2f position = MapBounds.RandomPositionInside();
         Player player = Player.CreatePlayer(position);
         
         Root.AdoptChild(player);
@@ -31,27 +37,7 @@ public class Agario : Game
 
     private void AddAiPlayer()
     {
-        Vector2f position = GetRandomPointInMap();
+        Vector2f position = MapBounds.RandomPositionInside();
         Root.AdoptChild(Player.CreateAiPlayer(position));
-    }
-
-    private static Vector2f GetRandomPointInMap()
-    {
-        float x = Random.Shared.Next(MapSize);
-        float y = Random.Shared.Next(MapSize);
-
-        return new(x, y);
-    }
-
-    private void AddFood(int amount)
-    {
-        for (int i = 0; i < amount; i++) 
-            AddFood();
-    }
-
-    private void AddFood()
-    {
-        Vector2f position = GetRandomPointInMap();
-        Root.AdoptChild(EatableCircle.CreateEatableCircle(10, position));
     }
 }
