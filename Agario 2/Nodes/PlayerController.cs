@@ -1,8 +1,7 @@
-using System.Net.NetworkInformation;
 using MyEngine;
 using MyEngine.Nodes;
 
-namespace Agario_2;
+namespace Agario_2.Nodes;
 
 public class PlayerController : Node
 {

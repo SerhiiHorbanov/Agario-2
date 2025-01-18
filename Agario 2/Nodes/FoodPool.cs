@@ -1,9 +1,9 @@
-using MyEngine.Nodes;
 using MyEngine;
+using MyEngine.Nodes;
 using SFML.Graphics;
 using SFML.System;
 
-namespace Agario_2;
+namespace Agario_2.Nodes;
 
 public class FoodPool : Node
 {

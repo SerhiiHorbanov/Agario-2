@@ -2,7 +2,7 @@ using MyEngine;
 using MyEngine.Nodes;
 using SFML.System;
 
-namespace Agario_2;
+namespace Agario_2.Nodes;
 
 public class AiController : Node
 {
