@@ -14,8 +14,18 @@ public class Camera : Node
         get => _view.Center;
         set
         {
-            _target.SetView(_view);
             _view.Center = value;
+            _target.SetView(_view);
+        }
+    }
+
+    public Vector2f Size
+    {
+        get => _view.Size;
+        set
+        {
+            _view.Size = value;
+            _target.SetView(_view);
         }
     }
 
