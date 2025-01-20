@@ -1,6 +1,5 @@
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 namespace MyEngine.Nodes;
 
@@ -8,6 +7,9 @@ public class Camera : Node
 {
     private View _view;
     private RenderTarget _target;
+
+
+    private bool changedView;
     
     public Vector2f Position
     {
@@ -15,7 +17,7 @@ public class Camera : Node
         set
         {
             _view.Center = value;
-            _target.SetView(_view);
+            changedView = true;
         }
     }
 
@@ -25,10 +27,13 @@ public class Camera : Node
         set
         {
             _view.Size = value;
-            _target.SetView(_view);
+            changedView = true;
         }
     }
 
+    public Vector2f RenderTargetSize
+        => (Vector2f)_target.Size;
+    
     private Camera()
     {
         _view = new();
@@ -45,10 +50,18 @@ public class Camera : Node
     
     public void Render(Node rootNode)
     {
+        UpdateView();
+        
         Queue<Drawable> drawables = rootNode.GetRenderQueue(this);
 
         _target.Clear(Color.Black);
         foreach (Drawable drawable in drawables)
             drawable.Draw(_target, RenderStates.Default);
+    }
+
+    private void UpdateView()
+    {
+        if (changedView)
+            _target.SetView(_view);
     }
 }
