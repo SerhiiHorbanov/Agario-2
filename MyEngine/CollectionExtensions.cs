@@ -7,4 +7,7 @@ public static class CollectionExtensions
         foreach (T each in enqueued)
             queue.Enqueue(each);
     }
+
+    public static T RandomElement<T>(List<T> list)
+        => list[Random.Shared.Next(list.Count)];
 }
