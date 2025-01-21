@@ -2,6 +2,7 @@ using Agario_2.Nodes;
 using MyEngine;
 using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
 
 namespace Agario_2;
 
@@ -15,10 +16,17 @@ public class Agario : Game
     
     protected override void GameSpecificInitialization()
     {
+        InitializeKeyBinds();
+
         AddUserPlayer();
 
         Root.AdoptChild(FoodPool.CreateFoodPool(FoodAmount, MapBounds));
         AddAiPlayers(AiPlayersAmount);
+    }
+
+    private void InitializeKeyBinds()
+    {
+        KeyBinds.AddKeyBind("dash", Keyboard.Key.Space);
     }
 
     private void AddUserPlayer()
@@ -26,8 +34,10 @@ public class Agario : Game
         Vector2f position = MapBounds.RandomPositionInside();
         Player player = Player.CreatePlayer(position);
         
-        Root.AdoptChild(player);
+        KeyBinds.GetKeyBind("dash").AddOnDownCallback(player.Dash);
         player.DraggedCamera = CurrentCamera;
+        
+        Root.AdoptChild(player);
     }
 
     private void AddAiPlayers(int amount)

@@ -16,6 +16,11 @@ public class Player : Node
     private const float StartingMaxSpeed = 500;
     private const float StartingRadius = 30;
 
+    private int _dashingFramesLeft;
+
+    private const int DashSpeedMultiplier = 4;
+    private const int DashSpanFrames = 20;
+    
     public Camera? DraggedCamera
     {
         get => _draggedCamera;
@@ -47,9 +52,13 @@ public class Player : Node
         get => _eatableCircle.Position;
         set => _eatableCircle.Position = value;
     }
+
+    private float CurrentDashSpeedMultiplier
+        => _dashingFramesLeft > 0 ? DashSpeedMultiplier : 1;
     
     private Player()
     {
+        _dashingFramesLeft = 0;
         WishedDelta = new(0, 0);
         _maxSpeed = StartingMaxSpeed;
         _maxSpeedSquared = StartingMaxSpeed * StartingMaxSpeed;
@@ -98,10 +107,24 @@ public class Player : Node
         CheckForEatingInNode(root);
         
         DoMovement();
-        
+
+        ProcessDash();
         TryDragCamera();
     }
 
+    private void ProcessDash()
+    {
+        if (_dashingFramesLeft != 0)
+        {
+            _dashingFramesLeft--;
+        }
+    }
+
+    public void Dash()
+    {
+        _dashingFramesLeft = DashSpanFrames;
+    }
+    
     private void TryDragCamera()
     {
         if (DraggedCamera == null)
@@ -113,7 +136,7 @@ public class Player : Node
     
     private void DoMovement()
     {
-        Vector2f delta = CalculateCappedDelta() * FrameTiming.DeltaSeconds;
+        Vector2f delta = CalculateCappedDelta() * FrameTiming.DeltaSeconds * CurrentDashSpeedMultiplier;
         _eatableCircle.Position += delta;
     }
 
@@ -142,7 +165,7 @@ public class Player : Node
     }
 
     private void UpdateMaxSpeed()
-        => MaxSpeed = StartingMaxSpeed / float.Max(1, float.Log10(Radius - StartingRadius));//StartingMaxSpeed / Radius * StartingRadius;
+        => MaxSpeed = StartingMaxSpeed / float.Max(1, float.Log10(Radius - StartingRadius));
 
     private float CalculateCameraSizeMultiplier()
         => 1 + (Radius - StartingRadius) / 200;
