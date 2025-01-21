@@ -11,8 +11,20 @@ public class Player : Node
     private float _maxSpeed;
     private float _maxSpeedSquared;
 
+    private Camera? _draggedCamera;
+    
     private const float StartingMaxSpeed = 500;
     private const float StartingRadius = 30;
+
+    public Camera? DraggedCamera
+    {
+        get => _draggedCamera;
+        set
+        {
+            _draggedCamera = value;
+            UpdateСameraSize();
+        }
+    }
 
     public float MaxSpeed
     {
@@ -36,7 +48,6 @@ public class Player : Node
         set => _eatableCircle.Position = value;
     }
     
-    public Camera? DraggedCamera;
     private Player()
     {
         WishedDelta = new(0, 0);
@@ -127,8 +138,18 @@ public class Player : Node
 
         _eatableCircle.Radius += eatable.Eat() * (1 / float.Log2(Radius));
         UpdateMaxSpeed();
+        UpdateСameraSize();
     }
-    
+
     private void UpdateMaxSpeed()
-        => MaxSpeed = StartingMaxSpeed / Radius * StartingRadius;
+        => MaxSpeed = StartingMaxSpeed / float.Max(1, float.Log10(Radius - StartingRadius));//StartingMaxSpeed / Radius * StartingRadius;
+
+    private float CalculateCameraSizeMultiplier()
+        => 1 + (Radius - StartingRadius) / 200;
+    
+    private void UpdateСameraSize()
+    {
+        if (DraggedCamera != null)
+            DraggedCamera.Size = DraggedCamera.RenderTargetSize * CalculateCameraSizeMultiplier();
+    }
 }
