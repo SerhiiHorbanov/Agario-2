@@ -55,6 +55,16 @@ public class Node : IEnumerable<Node>
     public void Orphan()
         => _toOrphan = true;
     
+    public Node GetRootNode()
+    {
+        Node current = this;
+        
+        while (!current.IsRoot)
+            current = current.Parent;
+
+        return current;
+    }
+    
     public Node AdoptChild(Node child)
     {
         child.Parent.DetachChild(child);
