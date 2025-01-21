@@ -1,6 +1,7 @@
 ﻿using MyEngine.MyInput;
 using SFML.Graphics;
 using MyEngine.Nodes;
+using SFML.Window;
 
 namespace MyEngine;
 
@@ -9,6 +10,7 @@ public abstract class Game
     protected Node Root;
     protected RenderWindow Window;
 
+    protected KeyBindManager KeyBinds;
     protected Camera? CurrentCamera;
     
     public void Run()
@@ -27,18 +29,28 @@ public abstract class Game
     private void Initialization()
     {
         Root = Node.CreateNode();
+        KeyBinds = new KeyBindManager();
         
-        Window = new RenderWindow(new(900, 900), "Window");
-        Window.Closed += (sender, args) => Window.Close();
-        
-        CurrentCamera = Camera.CreateCamera(Window);
-        Root.AdoptChild(CurrentCamera);
+        InitializeWindow();
+        InitializeCamera();
         
         FrameTiming.UpdateLastTimingTick();
         
         GameSpecificInitialization();
     }
-    
+
+    private void InitializeCamera()
+    {
+        CurrentCamera = Camera.CreateCamera(Window);
+        Root.AdoptChild(CurrentCamera);
+    }
+
+    private void InitializeWindow()
+    {
+        Window = new RenderWindow(new(900, 900), "Window");
+        Window.Closed += (sender, args) => Window.Close();
+    }
+
     protected abstract void GameSpecificInitialization();
     
     private bool ContinueGame()
@@ -52,13 +64,19 @@ public abstract class Game
 
     private void Input()
     {
-        MouseInput.UpdateInput(Window);
         Window.DispatchEvents();
+        
+        MouseInput.UpdateInput(Window);
+        KeyBinds.UpdateKeyBinds();
+        
         Root.ProcessInputTree();
     }
 
-    private void Update() 
-        => Root.UpdateTree();
+    private void Update()
+    {
+        Root.UpdateTree();
+        KeyBinds.ResolveCallbacks();
+    }
 
     private void Timing()
     {
