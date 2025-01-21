@@ -1,4 +1,5 @@
 using MyEngine;
+using MyEngine.MyInput;
 using MyEngine.Nodes;
 
 namespace Agario_2.Nodes;
@@ -14,5 +15,5 @@ public class PlayerController : Node
         => new(player);
     
     protected override void ProcessInput()
-        => _player.WishedDelta = Input.MousePositionFromWindowCenter;
+        => _player.WishedDelta = MouseInput.MousePositionFromWindowCenter;
 }

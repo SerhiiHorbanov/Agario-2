@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using MyEngine.MyInput;
+using SFML.Graphics;
 using MyEngine.Nodes;
 
 namespace MyEngine;
@@ -51,7 +52,7 @@ public abstract class Game
 
     private void Input()
     {
-        MyEngine.Input.UpdateInput(Window);
+        MouseInput.UpdateInput(Window);
         Window.DispatchEvents();
         Root.ProcessInputTree();
     }
