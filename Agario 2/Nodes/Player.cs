@@ -124,6 +124,21 @@ public class Player : Node
     {
         _dashingFramesLeft = DashSpanFrames;
     }
+
+    public void SwapBodies()
+    {
+        Node root = GetRootNode();
+
+        List<Player> players = root.GetChildrenOfType<Player>();
+
+        Player randomPlayer = players[Random.Shared.Next(players.Count)];
+
+        randomPlayer.AdoptChild(_eatableCircle);
+        AdoptChild(randomPlayer._eatableCircle);
+
+        (randomPlayer._eatableCircle, _eatableCircle) = (_eatableCircle, randomPlayer._eatableCircle);
+        (randomPlayer._eatableCircle.OnEaten, _eatableCircle.OnEaten) = (_eatableCircle.OnEaten, randomPlayer._eatableCircle.OnEaten);
+    }
     
     private void TryDragCamera()
     {

@@ -40,6 +40,19 @@ public class Node : IEnumerable<Node>
         return null;
     }
 
+    public List<T> GetChildrenOfType<T>() where T : Node
+    {
+        List<T> result = new();
+        
+        foreach (Node child in _children)
+        {
+            if (child is T node)
+                result.Add(node);
+        }
+
+        return result;
+    }
+    
     public T? GetSiblingOfType<T>() where T : Node
         => Parent.GetChildOfType<T>();    
     

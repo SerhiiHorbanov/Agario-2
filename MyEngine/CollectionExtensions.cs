@@ -8,6 +8,6 @@ public static class CollectionExtensions
             queue.Enqueue(each);
     }
 
-    public static T RandomElement<T>(List<T> list)
+    public static T GetRandomElement<T>(List<T> list)
         => list[Random.Shared.Next(list.Count)];
 }
