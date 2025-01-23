@@ -6,7 +6,7 @@ namespace Agario_2.Nodes;
 
 public class Player : Node
 {
-    private EatableCircle _eatableCircle;
+    private EatableCircle _body;
     public Vector2f WishedDelta;
     private float _maxSpeed;
     private float _maxSpeedSquared;
@@ -20,6 +20,24 @@ public class Player : Node
 
     private const int DashSpeedMultiplier = 4;
     private const int DashSpanFrames = 20;
+    
+    private EatableCircle Body
+    {
+        get => _body;
+        set
+        {
+            if (_body != null)
+            {
+                DetachChild(_body);
+                _body.OnEaten -= Orphan;
+            }
+
+            _body = value;
+            
+            AdoptChild(_body);
+            _body.OnEaten += Orphan;
+        }
+    }
     
     public Camera? DraggedCamera
     {
@@ -43,14 +61,14 @@ public class Player : Node
 
     private float Radius
     {
-        get => _eatableCircle.Radius;
-        set => _eatableCircle.Radius = value;
+        get => _body.Radius;
+        set => _body.Radius = value;
     }
     
     public Vector2f Position
     {
-        get => _eatableCircle.Position;
-        set => _eatableCircle.Position = value;
+        get => _body.Position;
+        set => _body.Position = value;
     }
 
     private float CurrentDashSpeedMultiplier
@@ -68,9 +86,7 @@ public class Player : Node
     {
         Player result = new();
         
-        result._eatableCircle = EatableCircle.CreateEatableCircle(StartingRadius, position);
-        result.AdoptChild(result._eatableCircle);
-        result._eatableCircle.OnEaten += result.Orphan;
+        result.Body = EatableCircle.CreateEatableCircle(StartingRadius, position);
         
         return result;
     }
@@ -130,14 +146,9 @@ public class Player : Node
         Node root = GetRootNode();
 
         List<Player> players = root.GetChildrenOfType<Player>();
+        Player randomPlayer = players.GetRandomElement();
 
-        Player randomPlayer = players[Random.Shared.Next(players.Count)];
-
-        randomPlayer.AdoptChild(_eatableCircle);
-        AdoptChild(randomPlayer._eatableCircle);
-
-        (randomPlayer._eatableCircle, _eatableCircle) = (_eatableCircle, randomPlayer._eatableCircle);
-        (randomPlayer._eatableCircle.OnEaten, _eatableCircle.OnEaten) = (_eatableCircle.OnEaten, randomPlayer._eatableCircle.OnEaten);
+        (randomPlayer.Body, Body) = (Body, randomPlayer.Body);
     }
     
     private void TryDragCamera()
@@ -152,7 +163,7 @@ public class Player : Node
     private void DoMovement()
     {
         Vector2f delta = CalculateCappedDelta() * FrameTiming.DeltaSeconds * CurrentDashSpeedMultiplier;
-        _eatableCircle.Position += delta;
+        Position += delta;
     }
 
     private void CheckForEatingInNode(Node root)
@@ -171,10 +182,10 @@ public class Player : Node
         if (eatable.Radius >= Radius)
             return;
 
-        if (!_eatableCircle.Encloses(eatable))
+        if (!_body.Encloses(eatable))
             return;
 
-        _eatableCircle.Radius += eatable.Eat() * (1 / float.Log2(Radius));
+        Radius += eatable.Eat() * (1 / float.Log2(Radius));
         UpdateMaxSpeed();
         UpdateСameraSize();
     }
