@@ -1,4 +1,4 @@
-﻿using MyEngine.MyInput;
+using MyEngine.MyInput;
 using SFML.Graphics;
 using MyEngine.Nodes;
 using SFML.Window;
@@ -67,7 +67,7 @@ public abstract class Game
         Window.DispatchEvents();
         
         MouseInput.UpdateInput(Window);
-        Inputs.UpdateKeyBinds();
+        Inputs.UpdateInputActions();
         
         Root.ProcessInputTree();
     }

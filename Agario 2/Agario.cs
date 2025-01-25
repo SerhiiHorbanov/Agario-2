@@ -1,5 +1,6 @@
 using Agario_2.Nodes;
 using MyEngine;
+using MyEngine.MyInput;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -35,8 +36,8 @@ public class Agario : Game
         Vector2f position = MapBounds.RandomPositionInside();
         Player player = Player.CreatePlayer(position);
         
-        Inputs.GetKeyBind("dash").AddOnDownCallback(player.Dash);
-        Inputs.GetKeyBind("body swap").AddOnDownCallback(player.SwapBodies);
+        Inputs.GetAction<KeyBind>("dash").AddOnDownCallback(player.Dash);
+        Inputs.GetAction<KeyBind>("body swap").AddOnDownCallback(player.SwapBodies);
         
         player.DraggedCamera = CurrentCamera;
         

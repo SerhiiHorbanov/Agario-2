@@ -4,31 +4,32 @@ namespace MyEngine.MyInput;
 
 public class InputManager
 {
-    public List<InputAction> KeyBinds;
-
+    private List<InputAction> _inputActions;
+    
+    
     public InputManager()
-        => KeyBinds = new List<InputAction>();
+        => _inputActions = new List<InputAction>();
 
-    public void UpdateKeyBinds()
+    public void UpdateInputActions()
     {
-        foreach(InputAction each in KeyBinds)
+        foreach(InputAction each in _inputActions)
             each.Update();
     }
 
     public void ResolveCallbacks()
     {
-        foreach(InputAction each in KeyBinds)
-            each.ResolveCallbacks();
+        foreach(InputAction each in _inputActions)
+            each.Resolve();
     }
     
     public InputAction AddKeyBind(string name, Keyboard.Key key)
     {
-        InputAction result = new InputAction(name, key);
-        KeyBinds.Add(result);
+        InputAction result = new KeyBind(name, key);
+        _inputActions.Add(result);
         
         return result;
     }
     
-    public InputAction GetKeyBind(string name)
-        => KeyBinds.Single(x => x.Name == name);
+    public T GetAction<T>(string name) where T : InputAction
+        => _inputActions.Single(x => x is T && x.Name == name) as T;
 }
