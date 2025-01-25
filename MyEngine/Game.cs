@@ -10,7 +10,7 @@ public abstract class Game
     protected Node Root;
     protected RenderWindow Window;
 
-    protected KeyBindManager KeyBinds;
+    protected InputManager Inputs;
     protected Camera? CurrentCamera;
     
     public void Run()
@@ -29,7 +29,7 @@ public abstract class Game
     private void Initialization()
     {
         Root = Node.CreateNode();
-        KeyBinds = new KeyBindManager();
+        Inputs = new InputManager();
         
         InitializeWindow();
         InitializeCamera();
@@ -67,7 +67,7 @@ public abstract class Game
         Window.DispatchEvents();
         
         MouseInput.UpdateInput(Window);
-        KeyBinds.UpdateKeyBinds();
+        Inputs.UpdateKeyBinds();
         
         Root.ProcessInputTree();
     }
@@ -75,7 +75,7 @@ public abstract class Game
     private void Update()
     {
         Root.UpdateTree();
-        KeyBinds.ResolveCallbacks();
+        Inputs.ResolveCallbacks();
     }
 
     private void Timing()

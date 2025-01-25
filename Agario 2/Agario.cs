@@ -26,8 +26,8 @@ public class Agario : Game
 
     private void InitializeKeyBinds()
     {
-        KeyBinds.AddKeyBind("dash", Keyboard.Key.Space);
-        KeyBinds.AddKeyBind("body swap", Keyboard.Key.F);
+        Inputs.AddKeyBind("dash", Keyboard.Key.Space);
+        Inputs.AddKeyBind("body swap", Keyboard.Key.F);
     }
 
     private void AddUserPlayer()
@@ -35,8 +35,8 @@ public class Agario : Game
         Vector2f position = MapBounds.RandomPositionInside();
         Player player = Player.CreatePlayer(position);
         
-        KeyBinds.GetKeyBind("dash").AddOnDownCallback(player.Dash);
-        KeyBinds.GetKeyBind("body swap").AddOnDownCallback(player.SwapBodies);
+        Inputs.GetKeyBind("dash").AddOnDownCallback(player.Dash);
+        Inputs.GetKeyBind("body swap").AddOnDownCallback(player.SwapBodies);
         
         player.DraggedCamera = CurrentCamera;
         
