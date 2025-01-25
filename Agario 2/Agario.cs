@@ -40,8 +40,8 @@ public class Agario : Game
         
         Inputs.GetAction<KeyBind>("dash").AddOnDownCallback(player.Dash);
         Inputs.GetAction<KeyBind>("body swap").AddOnDownCallback(player.SwapBodies);
-        Inputs.GetAction<KeyBind>("zoom in").AddOnDownCallback(() => CurrentCamera.Size /= 1.1f);
-        Inputs.GetAction<KeyBind>("zoom out").AddOnDownCallback(() => CurrentCamera.Size *= 1.1f);
+        Inputs.GetAction<KeyBind>("zoom in").AddOnPressedCallback(() => CurrentCamera.Size /= 1 + 2f * FrameTiming.DeltaSeconds);
+        Inputs.GetAction<KeyBind>("zoom out").AddOnPressedCallback(() => CurrentCamera.Size *= 1 + 2f * FrameTiming.DeltaSeconds);
         
         player.DraggedCamera = CurrentCamera;
         
