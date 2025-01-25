@@ -4,7 +4,7 @@ using SFML.System;
 
 namespace Agario_2.Nodes;
 
-public class AiController : Node
+public class AiController : Node, IUpdatable
 {
     private Player _player;
     private Vector2f _currentWayPoint;
@@ -29,7 +29,7 @@ public class AiController : Node
         _currentWayPoint = _player.Position + new Vector2f(x, y);
     }
     
-    protected override void Update(Node root)
+    public void Update(Node root)
     {
         UpdateDelta();
         

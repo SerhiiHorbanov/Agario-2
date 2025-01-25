@@ -106,7 +106,7 @@ public class Node : IEnumerable<Node>
             }
             
             updateQueue.Enqueue(updating._children);
-            updating.Update(this);
+            updating.TryUpdate(this);
         }
     }
     
@@ -137,8 +137,8 @@ public class Node : IEnumerable<Node>
     protected virtual void ProcessInput()
     { }
     
-    protected virtual void Update(Node root)
-    { }
+    private void TryUpdate(Node root)
+        => (this as IUpdatable)?.Update(root);
 
     public IEnumerator<Node> GetEnumerator()
         => _children.GetEnumerator();
