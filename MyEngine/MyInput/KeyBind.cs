@@ -8,6 +8,12 @@ public class KeyBind : InputAction
     private bool _wasPressed;
 
     private Action _onDown;
+    private Action _onPressed;
+
+    private bool IsDown
+        => !_wasPressed && IsActive;
+    private bool IsPressed
+        => _wasPressed && IsActive;
     
     public KeyBind(string name, Keyboard.Key key) : base(name)
     {
@@ -23,6 +29,11 @@ public class KeyBind : InputAction
     public void ResetOnDownCallbacks()
         => _onDown = null;
 
+    public void AddOnPressedCallback(Action callback)
+        => _onPressed += callback;
+    public void ResetOnPressedCallbacks()
+        => _onPressed = null;
+    
     protected override bool ProcessIsActive()
         => Keyboard.IsKeyPressed(_key);
 
@@ -34,7 +45,9 @@ public class KeyBind : InputAction
 
     public override void Resolve()
     {
-        if (!_wasPressed && IsActive)
-            _onDown.Invoke();
+        if (IsDown)
+            _onDown?.Invoke();
+        if (IsPressed)
+            _onPressed?.Invoke();
     }
 }
