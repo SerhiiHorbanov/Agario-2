@@ -129,13 +129,13 @@ public class Node : IEnumerable<Node>
     
     public void ProcessInputTree()
     {
-        ProcessInput();
+        TryProcessInput();
         foreach (Node child in _children)
             child.ProcessInputTree();
     }
     
-    protected virtual void ProcessInput()
-    { }
+    private void TryProcessInput()
+        => (this as IProcessesInput)?.ProcessInput();
     
     private void TryUpdate(Node root)
         => (this as IUpdatable)?.Update(root);

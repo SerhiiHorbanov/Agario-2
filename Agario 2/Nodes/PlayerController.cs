@@ -4,7 +4,7 @@ using MyEngine.Nodes;
 
 namespace Agario_2.Nodes;
 
-public class PlayerController : Node
+public class PlayerController : Node, IProcessesInput
 {
     private Player _player;
 
@@ -14,6 +14,6 @@ public class PlayerController : Node
     public static PlayerController CreatePlayerController(Player player)
         => new(player);
     
-    protected override void ProcessInput()
+    public void ProcessInput()
         => _player.WishedDelta = MouseInput.MousePositionFromWindowCenter;
 }
