@@ -29,14 +29,20 @@ public abstract class Game
     private void Initialization()
     {
         Root = Node.CreateNode();
-        Inputs = new InputManager();
         
         InitializeWindow();
+        InitializeInput();
         InitializeCamera();
         
         FrameTiming.UpdateLastTimingTick();
         
         GameSpecificInitialization();
+    }
+
+    private void InitializeInput()
+    {
+        Inputs = new InputManager();
+        MouseWheel.AddListenerTo(Window);
     }
 
     private void InitializeCamera()

@@ -27,10 +27,10 @@ public class Agario : Game
 
     private void InitializeKeyBinds()
     {
-        Inputs.AddKeyBind("dash", Keyboard.Key.Space);
-        Inputs.AddKeyBind("body swap", Keyboard.Key.F);
-        Inputs.AddKeyBind("zoom in", Keyboard.Key.Q);
-        Inputs.AddKeyBind("zoom out", Keyboard.Key.E);
+        Inputs.AddAction(new KeyBind("dash", Keyboard.Key.Space));
+        Inputs.AddAction(new KeyBind("body swap", Keyboard.Key.F));
+        Inputs.AddAction(new KeyBind("zoom in", Keyboard.Key.Q));
+        Inputs.AddAction(new KeyBind("zoom out", Keyboard.Key.E));
     }
 
     private void AddUserPlayer()
