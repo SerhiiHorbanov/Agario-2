@@ -22,9 +22,9 @@ public class WheelScrollBind : InputAction
         return (MouseWheel.LastDelta < 0) == _isDown;
     }
 
-    public void AddAction(Action action)
+    public void AddCallback(Action action)
         => _onScrolledCorrectWay += action;
-    public void ResetAction()
+    public void ResetCallbacks()
         => _onScrolledCorrectWay = null;
     
     public override void Resolve()
