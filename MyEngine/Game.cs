@@ -11,7 +11,7 @@ public abstract class Game
     protected RenderWindow Window;
 
     protected InputManager Inputs;
-    protected Camera? CurrentCamera;
+    protected Camera CurrentCamera;
     
     public void Run()
     {
@@ -58,6 +58,7 @@ public abstract class Game
 
     private void Render()
     {
+        Window.Clear();
         CurrentCamera?.Render(Root);
         Window.Display();
     }
