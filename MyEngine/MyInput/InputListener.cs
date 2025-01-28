@@ -2,13 +2,13 @@ using SFML.Window;
 
 namespace MyEngine.MyInput;
 
-public class InputManager
+public class InputListener
 {
     private List<InputAction> _inputActions;
     
-    public InputManager()
+    public InputListener()
         => _inputActions = new List<InputAction>();
-
+    
     public void UpdateInputActions()
     {
         foreach(InputAction each in _inputActions)

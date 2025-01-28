@@ -10,8 +10,8 @@ public abstract class Game
     protected Node Root;
     protected RenderWindow Window;
 
-    protected InputManager Inputs;
-    protected Camera CurrentCamera;
+    protected InputListener GlobalInputs;
+    protected Camera CurrentCamera; 
     
     public void Run()
     {
@@ -41,7 +41,7 @@ public abstract class Game
 
     private void InitializeInput()
     {
-        Inputs = new InputManager();
+        GlobalInputs = new InputListener();
         MouseWheel.AddListenerTo(Window);
     }
 
@@ -74,7 +74,7 @@ public abstract class Game
         Window.DispatchEvents();
         
         MouseInput.UpdateInput(Window);
-        Inputs.UpdateInputActions();
+        GlobalInputs.UpdateInputActions();
         
         Root.ProcessInputTree();
     }
@@ -82,7 +82,7 @@ public abstract class Game
     private void Update()
     {
         Root.UpdateTree();
-        Inputs.ResolveCallbacks();
+        GlobalInputs.ResolveCallbacks();
     }
 
     private void Timing()
