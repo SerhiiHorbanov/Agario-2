@@ -10,7 +10,7 @@ public abstract class Game
     protected Node Root;
     protected RenderWindow Window;
 
-    protected InputListener GlobalInputs;
+    protected InputSystem Input;
     protected Camera CurrentCamera; 
     
     public void Run()
@@ -20,7 +20,7 @@ public abstract class Game
         while (ContinueGame())
         {
             Render();
-            Input();
+            ProcessInput();
             Update();
             Timing();
         }
@@ -41,7 +41,7 @@ public abstract class Game
 
     private void InitializeInput()
     {
-        GlobalInputs = new InputListener();
+        Input = InputSystem.CreateInputSystem();
         MouseWheel.AddListenerTo(Window);
     }
 
@@ -69,12 +69,12 @@ public abstract class Game
         Window.Display();
     }
 
-    private void Input()
+    private void ProcessInput()
     {
         Window.DispatchEvents();
         
         MouseInput.UpdateInput(Window);
-        GlobalInputs.UpdateInputActions();
+        Input.Update();
         
         Root.ProcessInputTree();
     }
@@ -82,7 +82,7 @@ public abstract class Game
     private void Update()
     {
         Root.UpdateTree();
-        GlobalInputs.ResolveCallbacks();
+        Input.ResolveCallbacks();
     }
 
     private void Timing()
