@@ -11,6 +11,18 @@ public static class CollectionExtensions
     public static T GetRandomElement<T>(this List<T> list)
         => list[Random.Shared.Next(list.Count)];
 
+    public static void SwapRemove<T>(this List<T> list, T item) where T : class
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i] == item)
+            {
+                list.SwapRemoveAt(i);
+                return;
+            }
+        }
+    }
+    
     public static void SwapRemoveAt<T>(this List<T> list, int index)
     {
         list.Swap(index, list.Count - 1);
