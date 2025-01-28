@@ -26,13 +26,13 @@ public class KeyBind : InputAction
 
     public void AddOnDownCallback(Action callback)
         => _onDown += callback;
-    public void ResetOnDownCallbacks()
-        => _onDown = null;
+    public void ResetOnDownCallbacks(Action newValue = null)
+        => _onDown = newValue;
 
     public void AddOnPressedCallback(Action callback)
         => _onPressed += callback;
-    public void ResetOnPressedCallbacks()
-        => _onPressed = null;
+    public void ResetOnPressedCallbacks(Action newValue = null)
+        => _onPressed = newValue;
     
     protected override bool ProcessIsActive()
         => Keyboard.IsKeyPressed(_key);

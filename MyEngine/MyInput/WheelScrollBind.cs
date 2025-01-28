@@ -24,8 +24,8 @@ public class WheelScrollBind : InputAction
 
     public void AddCallback(Action action)
         => _onScrolledCorrectWay += action;
-    public void ResetCallbacks()
-        => _onScrolledCorrectWay = null;
+    public void ResetCallbacks(Action newValue = null)
+        => _onScrolledCorrectWay = newValue;
     
     public override void Resolve()
     {
