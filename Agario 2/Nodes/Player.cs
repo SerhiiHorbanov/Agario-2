@@ -1,4 +1,5 @@
 using MyEngine;
+using MyEngine.MyInput;
 using MyEngine.Nodes;
 using SFML.System;
 
@@ -81,10 +82,10 @@ public class Player : Node, IUpdatable
         return result;
     }
 
-    public static Player CreatePlayer(Vector2f position)
+    public static Player CreatePlayer(Vector2f position, InputSystem inputSystem)
     {
         Player result = CreatePlayerWithNoController(position);
-        result.AdoptChild(PlayerController.CreatePlayerController(result));
+        result.AdoptChild(PlayerController.CreatePlayerController(inputSystem, result));
         
         return result;
     }

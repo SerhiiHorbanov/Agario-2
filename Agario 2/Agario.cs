@@ -3,7 +3,6 @@ using MyEngine;
 using MyEngine.MyInput;
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 namespace Agario_2;
 
@@ -27,8 +26,6 @@ public class Agario : Game
 
     private void InitializeKeyBinds()
     {
-        Input.GlobalListener.AddAction(new KeyBind("dash", Keyboard.Key.Space));
-        Input.GlobalListener.AddAction(new KeyBind("body swap", Keyboard.Key.F));
         Input.GlobalListener.AddAction(new WheelScrollBind("zoom in", false)).AddCallback(() => CurrentCamera.Size /= 1.2f);
         Input.GlobalListener.AddAction(new WheelScrollBind("zoom out", true)).AddCallback(() => CurrentCamera.Size *= 1.2f);
     }
@@ -36,11 +33,8 @@ public class Agario : Game
     private void AddUserPlayer()
     {
         Vector2f position = MapBounds.RandomPositionInside();
-        Player player = Player.CreatePlayer(position);
         
-        Input.GlobalListener.GetAction<KeyBind>("dash").AddOnDownCallback(player.Dash);
-        Input.GlobalListener.GetAction<KeyBind>("body swap").AddOnDownCallback(player.SwapBodies);
-        
+        Player player = Player.CreatePlayer(position, Input);
         player.DraggedCamera = CurrentCamera;
         
         Root.AdoptChild(player);

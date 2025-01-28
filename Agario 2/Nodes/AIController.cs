@@ -4,29 +4,36 @@ using SFML.System;
 
 namespace Agario_2.Nodes;
 
-public class AiController : Node, IUpdatable
+public class AiController : Controller<Player>, IUpdatable
 {
-    private Player _player;
     private Vector2f _currentWayPoint;
 
     private const float MaxDistanceToWayPoint = 200;
     private const float DistanceSquaredForNewWayPoint = 100;
-    
-    private AiController(Player player)
+
+    protected override void SetControlled(Player newControlled)
     {
-        _player = player;
+        base.SetControlled(newControlled);
+        
         SetNewWayPoint();
     }
 
     public static AiController CreateAiController(Player player)
-        => new(player);
+    {
+        AiController result = new();
+        
+        result.Controlled = player;
+        result.SetNewWayPoint();
+
+        return result;
+    }
 
     private void SetNewWayPoint()
     {
         float x = Random.Shared.NextSingle() * MaxDistanceToWayPoint * 2 - MaxDistanceToWayPoint;
         float y = Random.Shared.NextSingle() * MaxDistanceToWayPoint * 2 - MaxDistanceToWayPoint;
         
-        _currentWayPoint = _player.Position + new Vector2f(x, y);
+        _currentWayPoint = Controlled.Position + new Vector2f(x, y);
     }
     
     public void Update(Node root)
@@ -38,14 +45,14 @@ public class AiController : Node, IUpdatable
     }
 
     private bool TooCloseToWayPoint()
-        => _player.Position.SquaredDistanceTo(_currentWayPoint) < DistanceSquaredForNewWayPoint;
+        => Controlled.Position.SquaredDistanceTo(_currentWayPoint) < DistanceSquaredForNewWayPoint;
     
     private void UpdateDelta()
     {
-        Vector2f delta = _currentWayPoint - _player.Position;
+        Vector2f delta = _currentWayPoint - Controlled.Position;
         delta /= delta.Length();
-        delta *= _player.MaxSpeed;
+        delta *= Controlled.MaxSpeed;
         
-        _player.WishedDelta = delta;
+        Controlled.WishedDelta = delta;
     }
 }
