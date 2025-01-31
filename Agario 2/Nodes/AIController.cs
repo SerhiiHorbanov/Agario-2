@@ -11,6 +11,9 @@ public class AiController : Controller<Player>, IUpdatable
     private const float MaxDistanceToWayPoint = 200;
     private const float DistanceSquaredForNewWayPoint = 100;
 
+    private AiController()
+    { }
+    
     protected override void SetControlled(Player newControlled)
     {
         base.SetControlled(newControlled);

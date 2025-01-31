@@ -73,27 +73,11 @@ public class Player : Node, IUpdatable
         _maxSpeedSquared = StartingMaxSpeed * StartingMaxSpeed;
     }
 
-    private static Player CreatePlayerWithNoController(Vector2f position)
+    public static Player CreatePlayerWithNoController(Vector2f position)
     {
         Player result = new();
         
         result.Body = EatableCircle.CreateEatableCircle(StartingRadius, position);
-        
-        return result;
-    }
-
-    public static Player CreatePlayer(Vector2f position, InputSystem inputSystem)
-    {
-        Player result = CreatePlayerWithNoController(position);
-        result.AdoptChild(PlayerController.CreatePlayerController(inputSystem, result));
-        
-        return result;
-    }
-    
-    public static Player CreateAiPlayer(Vector2f position)
-    {
-        Player result = CreatePlayerWithNoController(position);
-        result.AdoptChild(AiController.CreateAiController(result));
         
         return result;
     }

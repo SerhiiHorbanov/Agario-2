@@ -34,10 +34,11 @@ public class Agario : Game
     {
         Vector2f position = MapBounds.RandomPositionInside();
         
-        Player player = Player.CreatePlayer(position, Input);
+        Player player = Player.CreatePlayerWithNoController(position);
         player.DraggedCamera = CurrentCamera;
         
         Root.AdoptChild(player);
+        Root.AdoptChild(PlayerController.CreatePlayerController(Input, player));
     }
 
     private void AddAiPlayers(int amount)
@@ -49,6 +50,9 @@ public class Agario : Game
     private void AddAiPlayer()
     {
         Vector2f position = MapBounds.RandomPositionInside();
-        Root.AdoptChild(Player.CreateAiPlayer(position));
+        Player player = Player.CreatePlayerWithNoController(position);
+        
+        Root.AdoptChild(player);
+        Root.AdoptChild(AiController.CreateAiController(player));
     }
 }
