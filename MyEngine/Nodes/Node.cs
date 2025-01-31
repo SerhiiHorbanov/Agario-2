@@ -82,6 +82,7 @@ public class Node : IEnumerable<Node>
     {
         child.Parent.DetachChild(child);
         child.Parent = this;
+        child._toOrphan = false;
         _children.Add(child);
         
         return child;
