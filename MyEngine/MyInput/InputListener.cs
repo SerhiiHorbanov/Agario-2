@@ -1,9 +1,8 @@
-using SFML.Window;
-
 namespace MyEngine.MyInput;
 
-public class InputListener
+public class InputListener : IDisposable
 {
+    public InputSystem System { private get; set; }
     private List<InputAction> _inputActions;
     
     public InputListener()
@@ -29,4 +28,7 @@ public class InputListener
         _inputActions.Add(action);
         return action;
     }
+
+    public void Dispose()
+        => System.RemoveListener(this);
 }

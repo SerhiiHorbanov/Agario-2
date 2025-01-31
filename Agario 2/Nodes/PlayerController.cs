@@ -29,7 +29,9 @@ public class PlayerController : InputBasedController<Player>, IProcessesInput
 
         result.InitializeKeyBinds();
         inputSystem.AddListener(result.Input);
-        result.Controlled = player;
+
+        if (player != null)
+            result.Controlled = player;
         
         return result;
     }
@@ -41,5 +43,14 @@ public class PlayerController : InputBasedController<Player>, IProcessesInput
     }
     
     public void ProcessInput()
-        => Controlled.WishedDelta = MouseInput.MousePositionFromWindowCenter;
+    {
+        if (Controlled != null) 
+            Controlled.WishedDelta = MouseInput.MousePositionFromWindowCenter;
+    }
+
+    public override void Dispose()
+    {
+        Controlled = null;
+        base.Dispose();
+    }
 }

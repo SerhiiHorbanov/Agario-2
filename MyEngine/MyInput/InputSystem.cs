@@ -22,8 +22,11 @@ public class InputSystem
 
     public void AddListener(InputListener listener)
     {
-        if (!_activeListeners.Contains(listener)) 
+        if (!_activeListeners.Contains(listener))
+        {
             _activeListeners.Add(listener);
+            listener.System = this;
+        }
     }
 
     public void RemoveListener(InputListener listener)
