@@ -1,7 +1,6 @@
 using MyEngine.MyInput;
 using SFML.Graphics;
 using MyEngine.Nodes;
-using SFML.Window;
 
 namespace MyEngine;
 
@@ -53,7 +52,9 @@ public abstract class Game
 
     private void InitializeWindow()
     {
-        Window = new RenderWindow(new(900, 900), "Window");
+        WindowConfigs configs = ConfigLoader.LoadFromFile<WindowConfigs>("Window.cfg");
+        
+        Window = new RenderWindow(new((uint)configs.SizeHorizontal, (uint)configs.SizeVertical), "Window");
         Window.Closed += (sender, args) => Window.Close();
     }
 
