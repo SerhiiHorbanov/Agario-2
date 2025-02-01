@@ -1,7 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace MyEngine;
+namespace MyEngine.ConfigSystem;
 
 public static class ConfigLoader
 {

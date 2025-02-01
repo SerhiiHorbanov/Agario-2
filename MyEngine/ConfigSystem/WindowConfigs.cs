@@ -1,4 +1,4 @@
-namespace MyEngine;
+namespace MyEngine.ConfigSystem;
 
 public class WindowConfigs
 {
