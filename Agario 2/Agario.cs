@@ -8,11 +8,7 @@ namespace Agario_2;
 
 public class Agario : Game
 {
-    private const int MapSize = 5000;
-    private static readonly FloatRect MapBounds = new FloatRect(0, 0, 5000, 5000);
-        
-    private const int AiPlayersAmount = 20;
-    private const int FoodAmount = 1000;
+    private static FloatRect MapBounds;
     
     protected override void GameSpecificInitialization()
     {
@@ -22,13 +18,15 @@ public class Agario : Game
 
         AddUserPlayer();
 
-        Root.AdoptChild(FoodPool.CreateFoodPool(FoodAmount, MapBounds));
-        AddAiPlayers(AiPlayersAmount);
+        Root.AdoptChild(FoodPool.CreateFoodPool(MapConfigs.FoodAmount, MapBounds));
+        AddAiPlayers(MapConfigs.AiPlayersAmount);
     }
 
     private void LoadConfigs()
     {
         ConfigLoader.LoadStaticFieldsFromFile(typeof(PlayerConfigs), "Player.cfg");
+        ConfigLoader.LoadStaticFieldsFromFile(typeof(MapConfigs), "Map.cfg");
+        MapBounds = new(0, 0, MapConfigs.SizeHorizontal, MapConfigs.SizeVertical);
     }
 
     private void InitializeKeyBinds()
