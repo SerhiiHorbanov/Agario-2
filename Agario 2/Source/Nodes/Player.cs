@@ -8,7 +8,7 @@ using SFML.System;
 
 namespace Agario_2.Nodes;
 
-public class Player : Node, IUpdatable
+public class Player : Node
 {
     private EatableCircle _body;
     public Vector2f WishedDelta;
@@ -90,7 +90,7 @@ public class Player : Node, IUpdatable
         return WishedDelta / wishedDeltaLength * _maxSpeed;
     }
     
-    public void Update(Node root)
+    protected override void Update(Node root)
     {
         CheckForEatingInNode(root);
         
