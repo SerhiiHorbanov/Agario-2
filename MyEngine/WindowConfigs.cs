@@ -1,7 +1,10 @@
 namespace MyEngine;
 
-public struct WindowConfigs
+public class WindowConfigs
 {
-    public int SizeHorizontal;
-    public int SizeVertical;
+    public int SizeHorizontal = 900;
+    public int SizeVertical = 900;
+
+    public WindowConfigs()
+    { }
 }
