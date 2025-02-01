@@ -1,4 +1,4 @@
-namespace MyEngine.Nodes;
+namespace MyEngine.Nodes.Controllers;
 
 public abstract class Controller<T> : Node where T : Node
 {

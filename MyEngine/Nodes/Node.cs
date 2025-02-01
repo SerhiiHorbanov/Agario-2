@@ -1,4 +1,6 @@
 using System.Collections;
+using MyEngine.Nodes.Graphics;
+using MyEngine.Utils;
 using SFML.Graphics;
 
 namespace MyEngine.Nodes;

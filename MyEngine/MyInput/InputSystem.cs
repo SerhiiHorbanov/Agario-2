@@ -1,3 +1,5 @@
+using MyEngine.Utils;
+
 namespace MyEngine.MyInput;
 
 public class InputSystem

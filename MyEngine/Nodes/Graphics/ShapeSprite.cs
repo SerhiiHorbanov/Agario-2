@@ -1,7 +1,7 @@
 using SFML.Graphics;
 using SFML.System;
 
-namespace MyEngine.Nodes;
+namespace MyEngine.Nodes.Graphics;
 
 public class ShapeSprite<T> : Node, Drawable where T : Shape
 { 

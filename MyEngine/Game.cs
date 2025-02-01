@@ -2,6 +2,7 @@ using MyEngine.ConfigSystem;
 using MyEngine.MyInput;
 using SFML.Graphics;
 using MyEngine.Nodes;
+using MyEngine.Nodes.Graphics;
 
 namespace MyEngine;
 

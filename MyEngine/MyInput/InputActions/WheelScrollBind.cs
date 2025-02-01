@@ -1,4 +1,4 @@
-namespace MyEngine.MyInput;
+namespace MyEngine.MyInput.InputActions;
 
 public class WheelScrollBind : InputAction
 {

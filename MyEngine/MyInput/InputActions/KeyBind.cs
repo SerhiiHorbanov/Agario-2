@@ -1,6 +1,6 @@
 using SFML.Window;
 
-namespace MyEngine.MyInput;
+namespace MyEngine.MyInput.InputActions;
 
 public class KeyBind : InputAction
 {

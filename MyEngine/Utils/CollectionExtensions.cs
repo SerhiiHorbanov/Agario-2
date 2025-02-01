@@ -1,4 +1,4 @@
-namespace MyEngine;
+namespace MyEngine.Utils;
 
 public static class CollectionExtensions
 {

@@ -1,7 +1,7 @@
 using SFML.Graphics;
 using SFML.System;
 
-namespace MyEngine;
+namespace MyEngine.Utils;
 
 public static class VectorMath
 {

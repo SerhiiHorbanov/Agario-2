@@ -1,7 +1,7 @@
 using SFML.Graphics;
 using SFML.Window;
 
-namespace MyEngine;
+namespace MyEngine.MyInput;
 
 public static class MouseWheel
 {

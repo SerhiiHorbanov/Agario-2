@@ -1,6 +1,6 @@
 using MyEngine.MyInput;
 
-namespace MyEngine.Nodes;
+namespace MyEngine.Nodes.Controllers;
 
 public class InputBasedController<T> : Controller<T>, IDisposable where T : Node
 {

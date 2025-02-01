@@ -1,3 +1,5 @@
+using MyEngine.MyInput.InputActions;
+
 namespace MyEngine.MyInput;
 
 public class InputListener : IDisposable
