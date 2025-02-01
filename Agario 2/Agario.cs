@@ -16,12 +16,19 @@ public class Agario : Game
     
     protected override void GameSpecificInitialization()
     {
+        LoadConfigs();
+        
         InitializeKeyBinds();
 
         AddUserPlayer();
 
         Root.AdoptChild(FoodPool.CreateFoodPool(FoodAmount, MapBounds));
         AddAiPlayers(AiPlayersAmount);
+    }
+
+    private void LoadConfigs()
+    {
+        ConfigLoader.LoadStaticFieldsFromFile(typeof(PlayerConfigs), "Player.cfg");
     }
 
     private void InitializeKeyBinds()

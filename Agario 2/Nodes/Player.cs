@@ -11,14 +11,8 @@ public class Player : Node, IUpdatable
     public Vector2f WishedDelta;
     private float _maxSpeed;
     private float _maxSpeedSquared;
-
-    private const float StartingMaxSpeed = 500;
-    private const float StartingRadius = 30;
-
+    
     private int _dashingFramesLeft;
-
-    private const int DashSpeedMultiplier = 4;
-    private const int DashSpanFrames = 20;
     
     private EatableCircle Body
     {
@@ -63,21 +57,21 @@ public class Player : Node, IUpdatable
     }
 
     private float CurrentDashSpeedMultiplier
-        => _dashingFramesLeft > 0 ? DashSpeedMultiplier : 1;
+        => _dashingFramesLeft > 0 ? PlayerConfigs.DashSpeedMultiplier : 1;
     
     private Player()
     {
         _dashingFramesLeft = 0;
         WishedDelta = new(0, 0);
-        _maxSpeed = StartingMaxSpeed;
-        _maxSpeedSquared = StartingMaxSpeed * StartingMaxSpeed;
+        _maxSpeed = PlayerConfigs.StartingMaxSpeed;
+        _maxSpeedSquared = PlayerConfigs.StartingMaxSpeed * PlayerConfigs.StartingMaxSpeed;
     }
 
     public static Player CreatePlayerWithNoController(Vector2f position)
     {
         Player result = new();
         
-        result.Body = EatableCircle.CreateEatableCircle(StartingRadius, position);
+        result.Body = EatableCircle.CreateEatableCircle(PlayerConfigs.StartingRadius, position);
         
         return result;
     }
@@ -113,7 +107,7 @@ public class Player : Node, IUpdatable
 
     public void Dash()
     {
-        _dashingFramesLeft = DashSpanFrames;
+        _dashingFramesLeft = PlayerConfigs.DashSpanFrames;
     }
 
     public void SwapBodies()
@@ -165,5 +159,5 @@ public class Player : Node, IUpdatable
     }
 
     private void UpdateMaxSpeed()
-        => MaxSpeed = StartingMaxSpeed / float.Max(1, float.Log10(Radius - StartingRadius));
+        => MaxSpeed = PlayerConfigs.StartingMaxSpeed / float.Max(1, float.Log10(Radius - PlayerConfigs.StartingRadius));
 }
