@@ -28,8 +28,8 @@ public class Agario : Game
 
     private void LoadConfigs()
     {
-        ConfigLoader.LoadStaticFieldsFromFile(typeof(PlayerConfigs), "Player.cfg");
-        ConfigLoader.LoadStaticFieldsFromFile(typeof(MapConfigs), "Map.cfg");
+        ConfigLoader.LoadStaticFieldsFromFile(typeof(PlayerConfigs), "Configs/Player.cfg");
+        ConfigLoader.LoadStaticFieldsFromFile(typeof(MapConfigs), "Configs/Map.cfg");
         MapBounds = new(0, 0, MapConfigs.SizeHorizontal, MapConfigs.SizeVertical);
     }
 

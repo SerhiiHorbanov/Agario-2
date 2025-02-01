@@ -13,13 +13,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Window.cfg">
+      <None Update="Configs\Map.cfg">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Player.cfg">
+      <None Update="Configs\Player.cfg">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Map.cfg">
+      <None Update="Configs\Window.cfg">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
