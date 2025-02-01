@@ -1,3 +1,4 @@
+using Agario_2.Configs;
 using Agario_2.Nodes;
 using MyEngine;
 using MyEngine.ConfigSystem;

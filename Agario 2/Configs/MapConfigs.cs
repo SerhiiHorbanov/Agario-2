@@ -1,4 +1,4 @@
-namespace Agario_2;
+namespace Agario_2.Configs;
 
 public static class MapConfigs
 {
