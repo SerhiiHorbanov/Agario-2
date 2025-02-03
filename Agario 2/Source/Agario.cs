@@ -2,7 +2,6 @@ using Agario_2.Configs;
 using Agario_2.Nodes;
 using MyEngine;
 using MyEngine.ConfigSystem;
-using MyEngine.MyInput;
 using MyEngine.MyInput.InputActions;
 using MyEngine.Utils;
 using SFML.Graphics;

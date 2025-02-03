@@ -1,4 +1,3 @@
-using MyEngine;
 using MyEngine.Nodes;
 using MyEngine.Utils;
 using SFML.Graphics;
