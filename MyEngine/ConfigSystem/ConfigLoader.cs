@@ -46,7 +46,7 @@ public static class ConfigLoader
     
     private static void TryAssignField<T>(ref T assignTo, FieldInfo field, string value)
     {
-        int parsedValue = int.Parse(value);
+        object parsedValue = ParseFieldValue(field.FieldType, value);
         
         field.SetValue(assignTo, parsedValue);
     }
@@ -95,10 +95,26 @@ public static class ConfigLoader
         if (!field.IsStatic)
             throw new Exception($"Field {fieldName} in type {type} is not static. Only static fields can be assigned with ConfigLoader");
 
-        int parsedValue = int.Parse(value);
+        object parsedValue = ParseFieldValue(field.FieldType, value);
         field.SetValue(null, parsedValue);
     }
     
+    private static object ParseFieldValue(Type parseTo, string stringValue)
+    {
+        if (parseTo == typeof(int))
+            return int.Parse(stringValue);
+        if (parseTo == typeof(float))
+            return float.Parse(stringValue);
+        if (parseTo == typeof(double))
+            return double.Parse(stringValue);
+        if (parseTo == typeof(bool))
+            return bool.Parse(stringValue);
+        if (parseTo == typeof(string))
+            return stringValue.TrimFirstLast('"');
+
+        throw new Exception($"can't parse \"{stringValue}\" to {parseTo.FullName}");
+    }
+
     private static void ThrowNoFieldException(string fieldName, Type type)
         => throw new Exception($"No field matches the name {fieldName} in assignment for type {type.FullName}");
 }
