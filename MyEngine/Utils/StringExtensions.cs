@@ -14,4 +14,22 @@ public static class StringExtensions
 
         return str.Remove(index, str.Length - 1);
     }
+
+    public static string TrimFirstLast(this string str, char ch)
+        => str.TrimFirstLast(ch, ch);
+    public static string TrimFirstLast(this string str, char first, char last)
+    {
+        int substrLen = str.Length;
+        int substrBegin = 0;
+        
+        if (str[0] == first)
+        {
+            substrLen--;
+            substrBegin = 1;
+        }
+        if (str[^1] == last)
+            substrLen--;
+        
+        return str.Substring(substrBegin, substrLen);
+    }
 }
