@@ -25,7 +25,7 @@ public static class StringExtensions
         if (index == -1)
             return str;
 
-        return str.Remove(index, str.Length - 1);
+        return str.Remove(index, str.Length - index);
     }
 
     public static string TrimFirstLast(this string str, char ch)
