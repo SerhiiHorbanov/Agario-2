@@ -2,12 +2,25 @@ namespace MyEngine.Utils;
 
 public static class StringExtensions
 {
-    public static string TrimAfter(this string str, char trim)
-        => str.TrimAfter(trim.ToString());
+    public static string CutOffBefore(this string str, char after)
+        => str.CutOffBefore(after.ToString());
     
-    public static string TrimAfter(this string str, string trim)
+    public static string CutOffBefore(this string str, string before)
     {
-        int index = str.IndexOf(trim);
+        int index = str.IndexOf(before);
+        
+        if (index == -1)
+            return str;
+
+        return str.Remove(0, index + 1);
+    }
+    
+    public static string CutOffAfter(this string str, char after)
+        => str.CutOffAfter(after.ToString());
+    
+    public static string CutOffAfter(this string str, string after)
+    {
+        int index = str.IndexOf(after);
         
         if (index == -1)
             return str;

@@ -19,7 +19,7 @@ public static class ConfigLoader
         {
             string line = file.ReadLine();
             
-            line = line.TrimAfter("//");
+            line = line.CutOffAfter("//");
             
             if (line.Contains('='))
                 TryAssignField(ref result, line);
@@ -71,7 +71,7 @@ public static class ConfigLoader
         {
             string line = file.ReadLine();
             
-            line = line.TrimAfter("//");
+            line = line.CutOffAfter("//");
             
             if (line.Contains('='))
                 TryAssignStaticField(type, line);
