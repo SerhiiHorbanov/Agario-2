@@ -11,7 +11,7 @@ namespace Agario_2;
 
 public class Agario : Game
 {
-    private static FloatRect MapBounds;
+    private static FloatRect _mapBounds;
     
     protected override void GameSpecificInitialization()
     {
@@ -21,7 +21,7 @@ public class Agario : Game
 
         AddUserPlayer();
 
-        Root.AdoptChild(FoodPool.CreateFoodPool(MapConfigs.FoodAmount, MapBounds));
+        Root.AdoptChild(FoodPool.CreateFoodPool(MapConfigs.FoodAmount, _mapBounds));
         AddAiPlayers(MapConfigs.AiPlayersAmount);
     }
 
@@ -29,7 +29,7 @@ public class Agario : Game
     {
         ConfigLoader.LoadStaticFieldsFromFile(typeof(PlayerConfigs), "Configs/Player.cfg");
         ConfigLoader.LoadStaticFieldsFromFile(typeof(MapConfigs), "Configs/Map.cfg");
-        MapBounds = new(0, 0, MapConfigs.SizeHorizontal, MapConfigs.SizeVertical);
+        _mapBounds = new(new(), MapConfigs.Size);
     }
 
     private void InitializeKeyBinds()
@@ -40,7 +40,7 @@ public class Agario : Game
 
     private void AddUserPlayer()
     {
-        Vector2f position = MapBounds.RandomPositionInside();
+        Vector2f position = _mapBounds.RandomPositionInside();
         
         Player player = Player.CreatePlayerWithNoController(position);
         player.DraggedCamera = CurrentCamera;
@@ -57,7 +57,7 @@ public class Agario : Game
 
     private void AddAiPlayer()
     {
-        Vector2f position = MapBounds.RandomPositionInside();
+        Vector2f position = _mapBounds.RandomPositionInside();
         Player player = Player.CreatePlayerWithNoController(position);
         
         Root.AdoptChild(player);

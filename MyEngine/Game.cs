@@ -56,7 +56,7 @@ public abstract class Game
     {
         WindowConfigs configs = ConfigLoader.LoadFromFile<WindowConfigs>("Configs/Window.cfg");
         
-        Window = new RenderWindow(new((uint)configs.SizeHorizontal, (uint)configs.SizeVertical), configs.WindowName);
+        Window = new (new(configs.Size.X, configs.Size.Y), configs.Name);
         Window.Closed += (sender, args) => Window.Close();
     }
 

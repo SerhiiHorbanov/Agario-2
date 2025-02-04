@@ -1,12 +1,10 @@
+using SFML.System;
+
 namespace MyEngine.ConfigSystem;
 
 public class WindowConfigs
 {
-    public int SizeHorizontal = 900;
-    public int SizeVertical = 900;
+    public Vector2u Size = new(900, 900);
 
-    public string WindowName = "Default window name";
-    
-    public WindowConfigs()
-    { }
+    public string Name = "Default window name";
 }
