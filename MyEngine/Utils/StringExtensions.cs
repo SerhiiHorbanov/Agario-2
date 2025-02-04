@@ -17,6 +17,7 @@ public static class StringExtensions
 
     public static string TrimFirstLast(this string str, char ch)
         => str.TrimFirstLast(ch, ch);
+    
     public static string TrimFirstLast(this string str, char first, char last)
     {
         int substrLen = str.Length;
@@ -32,4 +33,7 @@ public static class StringExtensions
         
         return str.Substring(substrBegin, substrLen);
     }
+
+    public static string TrimBrackets(this string str)
+        => str.Trim('(', ')', '{', '}', '[', ']', '<', '>');
 }
