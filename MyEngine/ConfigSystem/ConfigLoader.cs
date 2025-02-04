@@ -5,6 +5,8 @@ namespace MyEngine.ConfigSystem;
 
 public static class ConfigLoader
 {
+    public static ConfigValueParser ValueParser { private get; set; } = new ConfigValueParser();
+
     public static T LoadFromFile<T>(string fileName) where T : new()
     {
         if (!File.Exists(fileName))
@@ -46,7 +48,7 @@ public static class ConfigLoader
     
     private static void TryAssignField<T>(ref T assignTo, FieldInfo field, string value)
     {
-        object parsedValue = ParseFieldValue(field.FieldType, value);
+        object parsedValue = ValueParser.ParseFieldValue(field.FieldType, value);
         
         field.SetValue(assignTo, parsedValue);
     }
@@ -95,24 +97,8 @@ public static class ConfigLoader
         if (!field.IsStatic)
             throw new Exception($"Field {fieldName} in type {type} is not static. Only static fields can be assigned with ConfigLoader");
 
-        object parsedValue = ParseFieldValue(field.FieldType, value);
+        object parsedValue = ValueParser.ParseFieldValue(field.FieldType, value);
         field.SetValue(null, parsedValue);
-    }
-    
-    private static object ParseFieldValue(Type parseTo, string stringValue)
-    {
-        if (parseTo == typeof(int))
-            return int.Parse(stringValue);
-        if (parseTo == typeof(float))
-            return float.Parse(stringValue);
-        if (parseTo == typeof(double))
-            return double.Parse(stringValue);
-        if (parseTo == typeof(bool))
-            return bool.Parse(stringValue);
-        if (parseTo == typeof(string))
-            return stringValue.TrimFirstLast('"');
-
-        throw new Exception($"can't parse \"{stringValue}\" to {parseTo.FullName}");
     }
 
     private static void ThrowNoFieldException(string fieldName, Type type)
