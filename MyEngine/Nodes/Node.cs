@@ -90,10 +90,15 @@ public class Node : IEnumerable<Node>
         return child;
     }
     
-    public void UpdateTree()
+    public void UpdateTree(FrameTiming timing)
     {
         if (!IsRoot)
+        {
+            GetRootNode().UpdateTree(timing);
             return;
+        }
+
+        UpdateInfo info = GetUpdateInfo(timing);
         
         Queue<Node> updateQueue = new();
         updateQueue.Enqueue(this);
@@ -109,9 +114,12 @@ public class Node : IEnumerable<Node>
             }
             
             updateQueue.Enqueue(updating._children);
-            updating.Update(this);
+            updating.Update(info);
         }
     }
+    
+    private UpdateInfo GetUpdateInfo(FrameTiming timing)
+        => new(timing, this);
     
     public Queue<Drawable> GetRenderQueue(Camera camera)
     {
@@ -140,7 +148,7 @@ public class Node : IEnumerable<Node>
     protected virtual void ProcessInput()
     { }
     
-    protected virtual void Update(Node root)
+    protected virtual void Update(in UpdateInfo info)
     { }
 
     public IEnumerator<Node> GetEnumerator()

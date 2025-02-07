@@ -13,6 +13,7 @@ public abstract class Game
 
     protected InputSystem Input;
     protected Camera CurrentCamera; 
+    protected FrameTiming Time;
     
     public void Run()
     {
@@ -34,10 +35,15 @@ public abstract class Game
         InitializeWindow();
         InitializeInput();
         InitializeCamera();
-        
-        FrameTiming.UpdateLastTimingTick();
+        InitializeTiming();
         
         GameSpecificInitialization();
+    }
+
+    private void InitializeTiming()
+    {
+        Time = new();
+        Time.UpdateLastTimingTick();
     }
 
     private void InitializeInput()
@@ -84,12 +90,12 @@ public abstract class Game
 
     private void Update()
     {
-        Root.UpdateTree();
+        Root.UpdateTree(Time);
         Input.ResolveCallbacks();
     }
 
     private void Timing()
     {
-        FrameTiming.Timing();
+        Time.Timing();
     }
 }

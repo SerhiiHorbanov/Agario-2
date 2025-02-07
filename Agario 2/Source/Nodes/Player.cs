@@ -89,14 +89,14 @@ public class Player : Node
         return WishedDelta / wishedDeltaLength * _maxSpeed;
     }
     
-    protected override void Update(Node root)
+    protected override void Update(in UpdateInfo updateInfo)
     {
-        CheckForEatingInNode(root);
+        CheckForEatingInNode(updateInfo.Root);
         
-        DoMovement();
+        DoMovement(updateInfo.Time);
 
         ProcessDash();
-        TryDragCamera();
+        TryDragCamera(updateInfo.Time);
     }
 
     private void ProcessDash()
@@ -122,18 +122,18 @@ public class Player : Node
         (randomPlayer.Body, Body) = (Body, randomPlayer.Body);
     }
     
-    private void TryDragCamera()
+    private void TryDragCamera(FrameTiming time)
     {
         if (DraggedCamera == null)
             return;
 
-        float interpolation = FrameTiming.DeltaSeconds * 5;
+        float interpolation = time.DeltaSeconds * 5;
         DraggedCamera.Position = DraggedCamera.Position.Lerp(Position, interpolation);
     }
     
-    private void DoMovement()
+    private void DoMovement(FrameTiming time)
     {
-        Vector2f delta = CalculateCappedDelta() * FrameTiming.DeltaSeconds * CurrentDashSpeedMultiplier;
+        Vector2f delta = CalculateCappedDelta() * time.DeltaSeconds * CurrentDashSpeedMultiplier;
         Position += delta;
     }
 

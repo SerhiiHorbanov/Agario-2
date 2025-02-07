@@ -40,7 +40,7 @@ public class AiController : Controller<Player>
         _currentWayPoint = Controlled.Position + new Vector2f(x, y);
     }
     
-    protected override void Update(Node root)
+    protected override void Update(in UpdateInfo info)
     {
         UpdateDelta();
         
