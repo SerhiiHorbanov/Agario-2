@@ -3,11 +3,11 @@ using SFML.System;
 
 namespace MyEngine.Nodes.Graphics;
 
-public class ShapeSprite<T> : Node, Drawable where T : Shape
+public class ShapeSprite<T> : RenderedNode where T : Shape
 { 
     public readonly T UnderlyingShape;
 
-    private ShapeSprite(T shape)
+    private ShapeSprite(T shape) : base(1)
         => UnderlyingShape = shape;
 
     public Vector2f Position
@@ -27,6 +27,6 @@ public class ShapeSprite<T> : Node, Drawable where T : Shape
     public static ShapeSprite<RectangleShape> CreateRectangleSprite(Vector2f size)
         => new(new(size));
     
-    public void Draw(RenderTarget target, RenderStates states)
+    public override void Draw(RenderTarget target, RenderStates states)
         => UnderlyingShape.Draw(target, states);
 }

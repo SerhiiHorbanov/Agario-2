@@ -7,6 +7,7 @@ public class Camera : Node
 {
     private View _view;
     private RenderTarget _target;
+    private uint _renderedLayer;
     
     public Vector2f Position
     {
@@ -20,12 +21,24 @@ public class Camera : Node
         set => _view.Size = value;
     }
 
-    private Camera()
-        => _view = new();
+    private Camera(uint renderedLayer)
+    {
+        _renderedLayer = renderedLayer;
+        _view = new();
+    }
 
     public static Camera CreateCamera(RenderTarget target)
     {
-        Camera result = new();
+        Camera result = new(1);
+
+        result._target = target;
+        
+        return result;
+    }
+    
+    public static Camera CreateUICamera(RenderTarget target)
+    {
+        Camera result = new(2);
 
         result._target = target;
         
@@ -34,12 +47,23 @@ public class Camera : Node
     
     public void Render(Node rootNode)
     {
-        Queue<Drawable> drawables = rootNode.GetRenderQueue(this);
+        Queue<RenderedNode> renderQueue = new();
+        AddToRenderQueue(rootNode, renderQueue);
 
         ApplyView();
         
-        foreach (Drawable drawable in drawables)
-            drawable.Draw(_target, RenderStates.Default);
+        foreach (RenderedNode renderedNode in renderQueue)
+            renderedNode.Draw(_target, RenderStates.Default);
+    }
+    
+    private void AddToRenderQueue(Node node, Queue<RenderedNode> queue)
+    {
+        if (node is RenderedNode rendered)
+            if (rendered.Layer == _renderedLayer)
+                queue.Enqueue(rendered);
+        
+        foreach (Node child in node)
+            AddToRenderQueue(child, queue);
     }
     
     private void ApplyView()

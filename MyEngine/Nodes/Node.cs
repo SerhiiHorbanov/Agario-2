@@ -136,23 +136,6 @@ public class Node : IEnumerable<Node>
     private UpdateInfo GetUpdateInfo(FrameTiming timing)
         => new(timing, this);
     
-    public Queue<Drawable> GetRenderQueue(Camera camera)
-    {
-        Queue<Drawable> drawables = new();
-        AddThisAndChildrenToDrawableQueue(drawables);
-
-        return drawables;
-    }
-
-    private void AddThisAndChildrenToDrawableQueue(Queue<Drawable> queue)
-    {
-        if (this is Drawable drawable)
-            queue.Enqueue(drawable);
-        
-        foreach (Node child in _children)
-            child.AddThisAndChildrenToDrawableQueue(queue);
-    }
-    
     public void ProcessInputTree()
     {
         ProcessInput();
