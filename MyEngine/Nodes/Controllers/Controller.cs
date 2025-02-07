@@ -2,11 +2,15 @@ namespace MyEngine.Nodes.Controllers;
 
 public abstract class Controller<T> : Node where T : Node
 {
-    private T _controlled;
+    private WeakReference<T> _controlled;
 
     protected T Controlled
     {
-        get => _controlled;
+        get
+        {
+            _controlled.TryGetTarget(out T result);
+            return result;
+        }
         set => SetControlled(value);
     }
 
@@ -20,5 +24,5 @@ public abstract class Controller<T> : Node where T : Node
     }
 
     protected virtual void SetControlled(T newControlled)
-        => _controlled = newControlled;
+        => _controlled = new WeakReference<T>(newControlled);
 }
