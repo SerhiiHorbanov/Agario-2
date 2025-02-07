@@ -42,6 +42,9 @@ public class AiController : Controller<Player>
     
     protected override void Update(in UpdateInfo info)
     {
+        if (Controlled == null)
+            return;
+        
         UpdateDelta();
         
         if (TooCloseToWayPoint())
