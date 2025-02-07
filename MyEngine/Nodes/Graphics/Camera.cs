@@ -7,7 +7,7 @@ public class Camera : Node
 {
     private View _view;
     private RenderTarget _target;
-    private uint _renderedLayer;
+    private RenderLayer _renderedLayer;
     
     public Vector2f Position
     {
