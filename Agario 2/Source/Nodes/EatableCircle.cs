@@ -32,7 +32,7 @@ public class EatableCircle : Node
     {
         EatableCircle result = new();
 
-        result._sprite = new ShapeSprite<CircleShape>(new CircleShape(radius));
+        result._sprite = ShapeSprite<CircleShape>.CreateCircleSprite(radius);
         result.Radius = radius;
         result.AdoptChild(result._sprite);
         result.Position = position;
