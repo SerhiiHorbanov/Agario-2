@@ -10,14 +10,16 @@ public class Node : IEnumerable<Node>
     private List<Node> _children;
     public Node Parent;
 
-    private bool _toOrphan;
+    private bool _isKilled;
     
     private bool IsRoot
         => Parent == this;
+    public bool IsKilled
+        => _isKilled;
 
     protected Node()
     {
-        _toOrphan = false;
+        _isKilled = false;
         _children = new();
         Parent = this;
     }
@@ -31,7 +33,7 @@ public class Node : IEnumerable<Node>
     public bool HasChild(Node child)
         => _children.Contains(child);
 
-    public T? GetChildOfType<T>() where T : Node
+    public T GetChildOfType<T>() where T : Node
     {
         foreach (Node child in _children)
         {
@@ -55,7 +57,7 @@ public class Node : IEnumerable<Node>
         return result;
     }
     
-    public T? GetSiblingOfType<T>() where T : Node
+    public T GetSiblingOfType<T>() where T : Node
         => Parent.GetChildOfType<T>();    
     
     public void DetachChild(Node child)
@@ -68,7 +70,20 @@ public class Node : IEnumerable<Node>
     }
 
     public void Orphan()
-        => _toOrphan = true;
+        => Parent.DetachChild(this);
+
+    public void Kill()
+        => _isKilled = true;
+
+    public void KillImmidiately()
+    {
+        Orphan();
+        
+        while (_children.Any())
+            _children[0].KillImmidiately();
+        
+        (this as IDisposable)?.Dispose();
+    }
     
     public Node GetRootNode()
     {
@@ -84,7 +99,7 @@ public class Node : IEnumerable<Node>
     {
         child.Parent.DetachChild(child);
         child.Parent = this;
-        child._toOrphan = false;
+        child._isKilled = false;
         _children.Add(child);
         
         return child;
@@ -107,9 +122,9 @@ public class Node : IEnumerable<Node>
         {
             Node updating = updateQueue.Dequeue();
 
-            if (updating._toOrphan)
+            if (updating._isKilled)
             {
-                updating.Parent.DetachChild(updating);
+                updating.KillImmidiately();
                 continue;
             }
             

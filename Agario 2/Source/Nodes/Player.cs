@@ -24,13 +24,13 @@ public class Player : Node
             if (_body != null)
             {
                 DetachChild(_body);
-                _body.OnEaten -= Orphan;
+                _body.OnEaten -= Kill;
             }
 
             _body = value;
             
             AdoptChild(_body);
-            _body.OnEaten += Orphan;
+            _body.OnEaten += Kill;
         }
     }
     

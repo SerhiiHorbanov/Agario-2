@@ -10,6 +10,15 @@ public abstract class Controller<T> : Node where T : Node
         set => SetControlled(value);
     }
 
+    protected override void Update(in UpdateInfo info)
+        => EnsureControlledIsNotKilled();
+
+    private void EnsureControlledIsNotKilled()
+    {
+        if (Controlled?.IsKilled ?? false)
+            Controlled = null;
+    }
+
     protected virtual void SetControlled(T newControlled)
         => _controlled = newControlled;
 }
