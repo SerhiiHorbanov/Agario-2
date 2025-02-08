@@ -21,7 +21,7 @@ public static class SoundManager
     {
         for (int i = 0; i < PlayingSounds.Count; i++)
         {
-            if (PlayingSounds[0].ShouldBeRemoved())
+            if (PlayingSounds[i].ShouldBeRemoved())
             {
                 PlayingSounds.SwapRemoveAt(i);
                 i--;
