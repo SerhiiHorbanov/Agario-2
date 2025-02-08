@@ -17,7 +17,7 @@ public class Agario : Game
     protected override void GameSpecificInitialization()
     {
         LoadConfigs();
-        InitializeSoundLibrary();
+        InitializeSounds();
         
         InitializeKeyBinds();
         AddUserPlayer();
@@ -39,11 +39,14 @@ public class Agario : Game
         Input.GlobalListener.AddAction(new WheelScrollBind("zoom out", true)).AddCallback(() => CurrentCamera.Size *= 1.2f);
     }
 
-    private void InitializeSoundLibrary()
+    private void InitializeSounds()
     {
         SoundFilesConfigs configs = ConfigLoader.LoadFromFile<SoundFilesConfigs>("Configs/SoundFiles.cfg");
         
         SoundLibrary.LoadAndStoreSound(configs.DashFile, "dash");
+        SoundLibrary.StoreMusic(configs.InvincibleFile, "invincible");
+        
+        AgarioSoundPlayer.PlayMusic();
     }
     
     private void AddUserPlayer()

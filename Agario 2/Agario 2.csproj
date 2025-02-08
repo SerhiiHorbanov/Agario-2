@@ -25,13 +25,12 @@
       <None Update="Configs\SoundFiles.cfg">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Sounds\dash.mp3">
+      <None Update="Sounds\Dash.mp3">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Sounds\" />
+      <None Update="Sounds\Invincible.mp3">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
