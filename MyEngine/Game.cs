@@ -3,6 +3,7 @@ using MyEngine.MyInput;
 using SFML.Graphics;
 using MyEngine.Nodes;
 using MyEngine.Nodes.Graphics;
+using MyEngine.SoundSystem;
 
 namespace MyEngine;
 
@@ -92,6 +93,7 @@ public abstract class Game
     {
         Root.UpdateTree(Time);
         Input.ResolveCallbacks();
+        SoundManager.UpdatePlayingSounds();
     }
 
     private void Timing()
