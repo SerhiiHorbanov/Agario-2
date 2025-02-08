@@ -2,6 +2,7 @@ using Agario_2.Configs;
 using MyEngine;
 using MyEngine.Nodes;
 using MyEngine.Nodes.Graphics;
+using MyEngine.SoundSystem;
 using MyEngine.Utils;
 using SFML.System;
 
@@ -110,6 +111,7 @@ public class Player : Node
     public void Dash()
     {
         _dashingFramesLeft = PlayerConfigs.DashSpanFrames;
+        AgarioSoundPlayer.PlayDashSound();
     }
 
     public void SwapBodies()

@@ -3,6 +3,7 @@ using Agario_2.Nodes;
 using MyEngine;
 using MyEngine.ConfigSystem;
 using MyEngine.MyInput.InputActions;
+using MyEngine.SoundSystem;
 using MyEngine.Utils;
 using SFML.Graphics;
 using SFML.System;
@@ -16,9 +17,9 @@ public class Agario : Game
     protected override void GameSpecificInitialization()
     {
         LoadConfigs();
+        InitializeSoundLibrary();
         
         InitializeKeyBinds();
-
         AddUserPlayer();
 
         Root.AdoptChild(FoodPool.CreateFoodPool(MapConfigs.FoodAmount, _mapBounds));
@@ -38,6 +39,13 @@ public class Agario : Game
         Input.GlobalListener.AddAction(new WheelScrollBind("zoom out", true)).AddCallback(() => CurrentCamera.Size *= 1.2f);
     }
 
+    private void InitializeSoundLibrary()
+    {
+        SoundFilesConfigs configs = ConfigLoader.LoadFromFile<SoundFilesConfigs>("Configs/SoundFiles.cfg");
+        
+        SoundLibrary.LoadAndStoreSound(configs.DashFile, "dash");
+    }
+    
     private void AddUserPlayer()
     {
         Vector2f position = _mapBounds.RandomPositionInside();
