@@ -6,6 +6,16 @@ namespace MyEngine.SoundSystem;
 public static class SoundManager
 {
     public static List<Sound> PlayingSounds = new();
+    public static List<Music> PlayingMusic = new();
+
+    public static Music PlayMusic(string name)
+    {
+        Music result = new(SoundLibrary.GetMusicPath(name));
+        PlayingMusic.Add(result);
+        result.Play();
+        
+        return result;
+    }
     
     public static void PlaySound(string name)
     {
@@ -27,8 +37,19 @@ public static class SoundManager
                 i--;
             }
         }
+
+        for (int i = 0; i < PlayingMusic.Count; i++)
+        {
+            if (PlayingMusic[i].ShouldBeRemoved())
+            {
+                PlayingSounds.SwapRemoveAt(i);
+                i--;
+            }
+        }
     }
 
     private static bool ShouldBeRemoved(this Sound sound)
         => sound.Status == SoundStatus.Stopped;
+    private static bool ShouldBeRemoved(this Music music)
+        => music.Status == SoundStatus.Stopped;
 }
