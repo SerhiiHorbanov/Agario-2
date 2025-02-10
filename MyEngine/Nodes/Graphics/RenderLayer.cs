@@ -2,9 +2,9 @@ namespace MyEngine.Nodes.Graphics;
 
 public readonly record struct RenderLayer(uint Value)
 {
-    private static readonly RenderLayer NotRenderedLayer = 0;
-    private static readonly RenderLayer NormalLayer = 1;
-    private static readonly RenderLayer UILayer = 2;
+    public static readonly RenderLayer NotRenderedLayer = 0;
+    public static readonly RenderLayer NormalLayer = 1;
+    public static readonly RenderLayer UILayer = 2;
     
     public bool IsRendered
         => Value != NotRenderedLayer;
