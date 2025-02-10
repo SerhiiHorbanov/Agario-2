@@ -10,10 +10,12 @@ namespace MyEngine;
 public abstract class Game
 {
     protected Node Root;
+    protected Node UIRoot;
     protected RenderWindow Window;
 
     protected InputSystem Input;
     protected Camera CurrentCamera; 
+    protected Camera UICamera; 
     protected FrameTiming Time;
     
     public void Run()
@@ -32,6 +34,7 @@ public abstract class Game
     private void Initialization()
     {
         Root = Node.CreateNode();
+        UIRoot = Node.CreateNode();
         
         InitializeWindow();
         InitializeInput();
@@ -57,6 +60,8 @@ public abstract class Game
     {
         CurrentCamera = Camera.CreateCamera(Window);
         Root.AdoptChild(CurrentCamera);
+        UICamera = Camera.CreateUICamera(Window);
+        UIRoot.AdoptChild(UICamera);
     }
 
     private void InitializeWindow()
@@ -75,7 +80,10 @@ public abstract class Game
     private void Render()
     {
         Window.Clear();
+        
         CurrentCamera?.Render(Root);
+        UICamera?.Render(UIRoot);
+        
         Window.Display();
     }
 
