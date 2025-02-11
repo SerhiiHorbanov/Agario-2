@@ -6,15 +6,15 @@ namespace Agario_2;
 public class AgarioSoundPlayer
 {
     public static void PlayDashSound()
-        => SoundManager.PlaySound("dash");
+        => SoundManager.CreateSound("dash").WithRandomizedPitch(min: 0.7f, max: 1.3f).Play();
 
     public static void PlayMusic()
     {
-        Music music = SoundManager.PlayMusic("invincible");
+        Music music = SoundManager.CreateMusic("invincible");
         
         music.Volume = 10;
         music.Loop = true;
-        
-        Console.WriteLine("playing music");
+
+        music.Play();
     }
 }

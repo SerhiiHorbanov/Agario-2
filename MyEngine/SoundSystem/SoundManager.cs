@@ -8,23 +8,22 @@ public static class SoundManager
     public static List<Sound> PlayingSounds = new();
     public static List<Music> PlayingMusic = new();
 
-    public static Music PlayMusic(string name)
+    public static Music CreateMusic(string name)
     {
         Music result = new(SoundLibrary.GetMusicPath(name));
         PlayingMusic.Add(result);
-        result.Play();
         
         return result;
     }
     
-    public static void PlaySound(string name)
+    public static Sound CreateSound(string name)
     {
         SoundBuffer buffer = SoundLibrary.GetSound(name);
         Sound sound = new Sound(buffer);
         
-        sound.Play();
-        
         PlayingSounds.Add(sound);
+        
+        return sound;
     }
 
     public static void UpdatePlayingSounds()
@@ -42,7 +41,7 @@ public static class SoundManager
         {
             if (PlayingMusic[i].ShouldBeRemoved())
             {
-                PlayingSounds.SwapRemoveAt(i);
+                PlayingMusic.SwapRemoveAt(i);
                 i--;
             }
         }
@@ -52,4 +51,18 @@ public static class SoundManager
         => sound.Status == SoundStatus.Stopped;
     private static bool ShouldBeRemoved(this Music music)
         => music.Status == SoundStatus.Stopped;
+
+    public static Sound WithOptions(this Sound sound, string soundOptionsName)
+        => SoundLibrary.GetSoundOptions(soundOptionsName).ApplyWithOffsetToSound(sound);
+
+    public static Music WithOptions(this Music music, string soundOptionsName)
+        => SoundLibrary.GetSoundOptions(soundOptionsName).ApplyWithOffsetToMusic(music);
+    
+    public static Sound WithRandomizedPitch(this Sound sound, float min, float max)
+    {
+        float pitch = (Random.Shared.NextSingle() * (max - min)) + min;
+        sound.Pitch = pitch;
+
+        return sound;
+    }
 }
