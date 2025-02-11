@@ -31,19 +31,13 @@ public static class SoundManager
         for (int i = 0; i < PlayingSounds.Count; i++)
         {
             if (PlayingSounds[i].ShouldBeRemoved())
-            {
-                PlayingSounds.SwapRemoveAt(i);
-                i--;
-            }
+                PlayingSounds.SwapRemoveAt(i--);
         }
 
         for (int i = 0; i < PlayingMusic.Count; i++)
         {
             if (PlayingMusic[i].ShouldBeRemoved())
-            {
-                PlayingMusic.SwapRemoveAt(i);
-                i--;
-            }
+                PlayingMusic.SwapRemoveAt(i--);
         }
     }
 
@@ -60,7 +54,7 @@ public static class SoundManager
     
     public static Sound WithRandomizedPitch(this Sound sound, float min, float max)
     {
-        float pitch = (Random.Shared.NextSingle() * (max - min)) + min;
+        float pitch = MyRandom.GetFloatInRange(min, max);
         sound.Pitch = pitch;
 
         return sound;

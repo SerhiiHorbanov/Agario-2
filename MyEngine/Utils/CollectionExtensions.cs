@@ -8,9 +8,6 @@ public static class CollectionExtensions
             queue.Enqueue(each);
     }
 
-    public static T GetRandomElement<T>(this List<T> list)
-        => list[Random.Shared.Next(list.Count)];
-
     public static void SwapRemove<T>(this List<T> list, T item) where T : class
     {
         for (int i = 0; i < list.Count; i++)

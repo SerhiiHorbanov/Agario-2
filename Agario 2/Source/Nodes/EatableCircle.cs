@@ -58,7 +58,5 @@ public class EatableCircle : Node
     }
 
     static Color GetRandomColor()
-    {
-        return Colors[Random.Shared.Next(Colors.Length)];
-    }
+        => Colors.GetRandomElement();
 }

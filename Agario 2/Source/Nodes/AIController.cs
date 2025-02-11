@@ -34,10 +34,10 @@ public class AiController : Controller<Player>
 
     private void SetNewWayPoint()
     {
-        float x = Random.Shared.NextSingle() * MaxDistanceToWayPoint * 2 - MaxDistanceToWayPoint;
-        float y = Random.Shared.NextSingle() * MaxDistanceToWayPoint * 2 - MaxDistanceToWayPoint;
+        float x = MyRandom.GetFloatInDistance(_currentWayPoint.X, MaxDistanceToWayPoint);
+        float y = MyRandom.GetFloatInDistance(_currentWayPoint.Y, MaxDistanceToWayPoint);
         
-        _currentWayPoint = Controlled.Position + new Vector2f(x, y);
+        _currentWayPoint = new(x, y);
     }
     
     protected override void Update(in UpdateInfo info)
