@@ -48,9 +48,13 @@ public static class SoundManager
 
     public static Sound WithOptions(this Sound sound, string soundOptionsName)
         => SoundLibrary.GetSoundOptions(soundOptionsName).ApplyWithOffsetToSound(sound);
-
+    public static Sound WithOptions(this Sound sound, SoundOptions options)
+        => options.ApplyWithOffsetToSound(sound);
+    
     public static Music WithOptions(this Music music, string soundOptionsName)
         => SoundLibrary.GetSoundOptions(soundOptionsName).ApplyWithOffsetToMusic(music);
+    public static Music WithOptions(this Music music, SoundOptions options)
+        => options.ApplyWithOffsetToMusic(music);
     
     public static Sound WithRandomizedPitch(this Sound sound, float min, float max)
     {

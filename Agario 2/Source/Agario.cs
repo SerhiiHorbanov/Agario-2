@@ -47,17 +47,7 @@ public class Agario : Game
         SoundLibrary.LoadAndStoreSound(configs.DashFile, "dash");
         SoundLibrary.StoreMusic(configs.InvincibleFile, "invincible");
         
-        PlayMusic();
-    }
-
-    private static void PlayMusic()
-    {
-        Music music = SoundManager.CreateMusic("invincible");
-        
-        music.Volume = 10;
-        music.Loop = true;
-
-        music.Play();
+        SoundManager.CreateMusic("invincible").WithOptions(new SoundOptions(loop: true, volume: 10)).Play();
     }
 
     private void AddUserPlayer()
