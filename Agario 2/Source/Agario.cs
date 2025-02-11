@@ -5,6 +5,7 @@ using MyEngine.ConfigSystem;
 using MyEngine.MyInput.InputActions;
 using MyEngine.SoundSystem;
 using MyEngine.Utils;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 
@@ -46,9 +47,19 @@ public class Agario : Game
         SoundLibrary.LoadAndStoreSound(configs.DashFile, "dash");
         SoundLibrary.StoreMusic(configs.InvincibleFile, "invincible");
         
-        AgarioSoundPlayer.PlayMusic();
+        PlayMusic();
     }
-    
+
+    private static void PlayMusic()
+    {
+        Music music = SoundManager.CreateMusic("invincible");
+        
+        music.Volume = 10;
+        music.Loop = true;
+
+        music.Play();
+    }
+
     private void AddUserPlayer()
     {
         Vector2f position = _mapBounds.RandomPositionInside();

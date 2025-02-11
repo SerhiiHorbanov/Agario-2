@@ -111,7 +111,7 @@ public class Player : Node
     public void Dash()
     {
         _dashingFramesLeft = PlayerConfigs.DashSpanFrames;
-        AgarioSoundPlayer.PlayDashSound();
+        SoundManager.CreateSound("dash").WithRandomizedPitch(min: 0.7f, max: 1.3f).Play();
     }
 
     public void SwapBodies()
