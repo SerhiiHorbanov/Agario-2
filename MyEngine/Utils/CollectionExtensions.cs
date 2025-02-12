@@ -2,6 +2,12 @@ namespace MyEngine.Utils;
 
 public static class CollectionExtensions
 {
+    public static void TryAdd<T1, T2>(this ICollection<T1> collection, T2 added)
+    {
+        if (added is T1 addedAsT1)
+            collection.Add(addedAsT1);
+    }
+    
     public static void Enqueue<T>(this Queue<T> queue, IEnumerable<T> enqueued)
     {
         foreach (T each in enqueued)
