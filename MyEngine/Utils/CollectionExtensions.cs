@@ -7,6 +7,12 @@ public static class CollectionExtensions
         if (added is T1 addedAsT1)
             collection.Add(addedAsT1);
     }
+
+    public static void TrySwapRemove<T1, T2>(this List<T1> list, T2 item) where T1 : class
+    {
+        if (item is T1 itemAsT1)
+            list.SwapRemove(itemAsT1);
+    }
     
     public static void Enqueue<T>(this Queue<T> queue, IEnumerable<T> enqueued)
     {
