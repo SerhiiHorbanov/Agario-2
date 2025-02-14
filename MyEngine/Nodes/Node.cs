@@ -31,6 +31,47 @@ public class Node : IEnumerable<Node>
     public bool HasChild(Node child)
         => _children.Contains(child);
 
+    public int CountDescendants()
+    {
+        int result = 0;
+        
+        foreach (Node each in _children)
+            result += each.CountDescendants();
+        
+        return result;
+    }
+
+    public T GetDescendantOfType<T>() where T : Node
+    {
+        foreach (Node child in _children)
+        {
+            if (child is T childAsT)
+                return childAsT;
+            
+            T found = child.GetDescendantOfType<T>();
+            if (found != null)
+                return found;
+        }
+
+        return null;
+    }
+
+    public List<T> GetDescendantsOfType<T>() where T : Node
+    {
+        List<T> result = new();
+        
+        foreach (Node child in _children)
+        {
+            result.TryAdd(child);
+
+            List<T> found = child.GetDescendantsOfType<T>();
+            if (found != null)
+                result.AddRange(found);
+        }
+
+        return result;
+    }
+    
     public T GetChildOfType<T>() where T : Node
     {
         foreach (Node child in _children)
