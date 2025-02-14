@@ -1,23 +1,17 @@
 using MyEngine.ConfigSystem;
 using MyEngine.MyInput;
 using SFML.Graphics;
-using MyEngine.Nodes;
-using MyEngine.Nodes.Graphics;
 using MyEngine.SoundSystem;
 
 namespace MyEngine;
 
 public abstract class Game
 {
-    protected Node Root;
-    protected Node UIRoot;
     protected RenderWindow Window;
-
+    protected SceneManager Scenes;
     protected InputSystem Input;
-    protected Camera CurrentCamera; 
-    protected Camera UICamera; 
     protected FrameTiming Time;
-    
+
     public void Run()
     {
         Initialization();
@@ -33,15 +27,17 @@ public abstract class Game
 
     private void Initialization()
     {
-        Root = Node.CreateNode();
-        UIRoot = Node.CreateNode();
-        
         InitializeWindow();
+        InitializeSceneManager();
         InitializeInput();
-        InitializeCamera();
         InitializeTiming();
         
         GameSpecificInitialization();
+    }
+
+    private void InitializeSceneManager()
+    {
+        Scenes = new SceneManager();
     }
 
     private void InitializeTiming()
@@ -54,14 +50,6 @@ public abstract class Game
     {
         Input = InputSystem.CreateInputSystem();
         MouseWheel.AddListenerTo(Window);
-    }
-
-    private void InitializeCamera()
-    {
-        CurrentCamera = Camera.CreateCamera(Window);
-        Root.AdoptChild(CurrentCamera);
-        UICamera = Camera.CreateUICamera(Window);
-        UIRoot.AdoptChild(UICamera);
     }
 
     private void InitializeWindow()
@@ -80,10 +68,7 @@ public abstract class Game
     private void Render()
     {
         Window.Clear();
-        
-        CurrentCamera?.Render(Root);
-        UICamera?.Render(UIRoot);
-        
+        Scenes.Render();
         Window.Display();
     }
 
@@ -94,18 +79,16 @@ public abstract class Game
         MouseInput.UpdateInput(Window);
         Input.Update();
         
-        Root.ProcessInputTree();
+        Scenes.ProcessInput();
     }
 
     private void Update()
     {
-        Root.UpdateTree(Time);
+        Scenes.Update(Time);
         Input.ResolveCallbacks();
         SoundManager.UpdatePlayingSounds();
     }
 
     private void Timing()
-    {
-        Time.Timing();
-    }
+        => Time.Timing();
 }

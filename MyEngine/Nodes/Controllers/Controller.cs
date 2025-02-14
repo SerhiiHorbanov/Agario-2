@@ -1,6 +1,6 @@
 namespace MyEngine.Nodes.Controllers;
 
-public abstract class Controller<T> : Node where T : Node
+public abstract class Controller<T> : Node, IUpdatable where T : Node
 {
     private WeakReference<T> _controlled;
 
@@ -14,7 +14,7 @@ public abstract class Controller<T> : Node where T : Node
         set => SetControlled(value);
     }
 
-    protected override void Update(in UpdateInfo info)
+    public virtual void Update(in UpdateInfo info)
         => EnsureControlledIsNotKilled();
 
     private void EnsureControlledIsNotKilled()

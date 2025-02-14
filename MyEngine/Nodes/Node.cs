@@ -9,6 +9,8 @@ public class Node : IEnumerable<Node>
     public Node Parent;
 
     private bool _isKilled;
+
+    private bool _isInScene;
     
     private bool IsRoot
         => Parent == this;
@@ -17,6 +19,7 @@ public class Node : IEnumerable<Node>
 
     protected Node()
     {
+        _isInScene = this is SceneNode;
         _isKilled = false;
         _children = new();
         Parent = this;
@@ -103,6 +106,12 @@ public class Node : IEnumerable<Node>
     {
         if (child == this)
             return;
+
+        if (_isInScene)
+        {
+            (GetRootNode() as SceneNode)?.UnregisterNodeAndChildren(child);
+            child._isInScene = false;
+        }
         
         child.Parent = child;
         _children.Remove(child);
@@ -124,6 +133,23 @@ public class Node : IEnumerable<Node>
         (this as IDisposable)?.Dispose();
     }
     
+    public void KillNodesToKill()
+    {
+        for (int i = 0; i < _children.Count; i++)
+        {
+            Node child = _children[i];
+
+            if (child._isKilled)
+            {
+                child.KillImmidiately();
+                i--;
+                continue;
+            }
+            
+            child.KillNodesToKill();
+        }
+    }
+    
     public Node GetRootNode()
     {
         Node current = this;
@@ -140,53 +166,12 @@ public class Node : IEnumerable<Node>
         child.Parent = this;
         child._isKilled = false;
         _children.Add(child);
+
+        if (!child._isInScene && _isInScene)
+            (GetRootNode() as SceneNode)?.RegisterNodeAndChildren(child);
         
         return child;
     }
-    
-    public void UpdateTree(FrameTiming timing)
-    {
-        if (!IsRoot)
-        {
-            GetRootNode().UpdateTree(timing);
-            return;
-        }
-
-        UpdateInfo info = GetUpdateInfo(timing);
-        
-        Queue<Node> updateQueue = new();
-        updateQueue.Enqueue(this);
-
-        while (updateQueue.Any())
-        {
-            Node updating = updateQueue.Dequeue();
-
-            if (updating._isKilled)
-            {
-                updating.KillImmidiately();
-                continue;
-            }
-            
-            updateQueue.Enqueue(updating._children);
-            updating.Update(info);
-        }
-    }
-    
-    private UpdateInfo GetUpdateInfo(FrameTiming timing)
-        => new(timing, this);
-    
-    public void ProcessInputTree()
-    {
-        ProcessInput();
-        foreach (Node child in _children)
-            child.ProcessInputTree();
-    }
-    
-    protected virtual void ProcessInput()
-    { }
-    
-    protected virtual void Update(in UpdateInfo info)
-    { }
 
     public IEnumerator<Node> GetEnumerator()
         => _children.GetEnumerator();

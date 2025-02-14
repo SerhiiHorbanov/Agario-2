@@ -1,11 +1,12 @@
 using MyEngine.MyInput;
 using MyEngine.MyInput.InputActions;
+using MyEngine.Nodes;
 using MyEngine.Nodes.Controllers;
 using SFML.Window;
 
 namespace Agario_2.Nodes;
 
-public class PlayerController : InputBasedController<Player>
+public class PlayerController : InputBasedController<Player>, IProcessesInput
 {
     private PlayerController() : base(new InputListener())
     { }
@@ -43,7 +44,7 @@ public class PlayerController : InputBasedController<Player>
         Input.AddAction(new KeyBind("body swap", Keyboard.Key.F));
     }
     
-    protected override void ProcessInput()
+    public void ProcessInput()
     {
         if (Controlled != null) 
             Controlled.WishedDelta = MouseInput.MousePositionFromWindowCenter;

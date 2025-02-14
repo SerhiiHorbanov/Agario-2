@@ -5,7 +5,7 @@ using SFML.System;
 
 namespace Agario_2.Nodes;
 
-public class AiController : Controller<Player>
+public class AiController : Controller<Player>, IUpdatable
 {
     private Vector2f _currentWayPoint;
 
@@ -40,7 +40,7 @@ public class AiController : Controller<Player>
         _currentWayPoint = new(x, y);
     }
     
-    protected override void Update(in UpdateInfo info)
+    public override void Update(in UpdateInfo info)
     {
         if (Controlled == null)
             return;
