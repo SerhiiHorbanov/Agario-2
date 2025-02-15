@@ -36,7 +36,8 @@ public sealed class EventSequence
     public void Play()
     {
         _isPlaying = true;
-        _tickOfStart = _now;
+        _tickOfStart = DateTime.Now.Ticks;
+        UpdateTickOfNextCalled(); 
     }
     
     public void Stop()
@@ -57,8 +58,6 @@ public sealed class EventSequence
         
         _tickOfNextCalled = _events.Keys[currentFrameIndex];
         UpdateTickOfNextCalled();
-        
-        OnTimeSet();
     }
     
     public void Update()
@@ -70,11 +69,6 @@ public sealed class EventSequence
         
         while (ShouldProceed())
             Proceed();
-    }
-
-    private void OnTimeSet()
-    {
-        
     }
 
     private int GetFrameIndexByTick(long ticks)
@@ -104,7 +98,7 @@ public sealed class EventSequence
     }
 
     private bool ShouldProceed() 
-        => _tickOfNextCalled < _now;
+        => _tickOfNextCalled < _now && _isPlaying;
 
     private void Proceed()
     {
