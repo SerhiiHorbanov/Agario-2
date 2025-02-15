@@ -10,7 +10,7 @@ public class Node : IEnumerable<Node>
 
     private bool _isKilled;
 
-    private bool _isInScene;
+    internal bool IsInScene;
     
     private bool IsRoot
         => Parent == this;
@@ -19,7 +19,7 @@ public class Node : IEnumerable<Node>
 
     protected Node()
     {
-        _isInScene = this is SceneNode;
+        IsInScene = this is SceneNode;
         _isKilled = false;
         _children = new();
         Parent = this;
@@ -107,10 +107,9 @@ public class Node : IEnumerable<Node>
         if (child == this)
             return;
 
-        if (_isInScene)
+        if (IsInScene)
         {
             (GetRootNode() as SceneNode)?.UnregisterNodeAndChildren(child);
-            child._isInScene = false;
         }
         
         child.Parent = child;
@@ -167,7 +166,7 @@ public class Node : IEnumerable<Node>
         child._isKilled = false;
         _children.Add(child);
 
-        if (!child._isInScene && _isInScene)
+        if (!child.IsInScene && IsInScene)
             (GetRootNode() as SceneNode)?.RegisterNodeAndChildren(child);
         
         return child;

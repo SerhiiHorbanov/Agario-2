@@ -31,7 +31,7 @@ public sealed class SceneNode : Node
 
     public static SceneNode CreateNewSceneWithCamera(RenderTarget target)
     {
-        SceneNode scene = new SceneNode();
+        SceneNode scene = new();
         Camera camera = Camera.CreateCamera(target);
         
         scene.AdoptChild(camera);
@@ -49,6 +49,7 @@ public sealed class SceneNode : Node
         _updatables.TryAdd(node);
         _inputProcessors.TryAdd(node);
         _renderedNodes.TryAdd(node);
+        node.IsInScene = true;
         
         foreach (Node child in node) 
             RegisterNodeAndChildren(child);
@@ -71,6 +72,7 @@ public sealed class SceneNode : Node
         _updatables.TrySwapRemove(node);
         _inputProcessors.TrySwapRemove(node);
         _renderedNodes.TrySwapRemove(node);
+        node.IsInScene = false;
 
         foreach (Node child in node)
             UnregisterNodeAndChildren(child);
