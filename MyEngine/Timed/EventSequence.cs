@@ -54,9 +54,9 @@ public sealed class EventSequence
         long ticks = (long)(t * TimeSpan.TicksPerSecond);
         _tickOfStart = _now - ticks;
 
-        int currentFrameIndex = GetFrameIndexByTick(ticks);
+        _indexOfNextCalled = GetFrameIndexByTick(ticks);
+        _tickOfNextCalled = _events.Keys[_indexOfNextCalled];
         
-        _tickOfNextCalled = _events.Keys[currentFrameIndex];
         UpdateTickOfNextCalled();
     }
     
