@@ -5,10 +5,13 @@ using MyEngine.ConfigSystem;
 using MyEngine.MyInput.InputActions;
 using MyEngine.Nodes;
 using MyEngine.Nodes.Graphics;
+using MyEngine.Nodes.UI;
 using MyEngine.SoundSystem;
+using MyEngine.Timed;
 using MyEngine.Utils;
 using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
 
 namespace Agario_2;
 
@@ -16,6 +19,7 @@ public class Agario : Game
 {
     private static FloatRect _mapBounds;
     private SceneNode _agarioScene;
+    private SceneNode _pauseMenuScene;
     
     protected override void GameSpecificInitialization()
     {
@@ -23,19 +27,45 @@ public class Agario : Game
         InitializeSounds();
         
         InitializeScenes();
+        InitializePause();
     }
 
     private void InitializeScenes()
     {
-        Scenes.Add("aga", SceneNode.CreateNewScene());
-        _agarioScene = Scenes["aga"];
-        
+        InitializePauseMenu();
+        InitializeGameplayScene();
+    }
+
+    private void InitializeGameplayScene()
+    {
+        Scenes.Add("agario", SceneNode.CreateNewScene());
+        _agarioScene = Scenes["agario"];
+
         AddUserPlayer();
 
         _agarioScene.AdoptChild(FoodPool.CreateFoodPool(MapConfigs.FoodAmount, _mapBounds));
         AddAiPlayers(MapConfigs.AiPlayersAmount);
     }
 
+    private void InitializePauseMenu()
+    {
+        Scenes.Add("pause menu", SceneNode.CreateNewSceneWithCamera(Window));
+        _pauseMenuScene = Scenes["pause menu"];
+        _pauseMenuScene.IsRendered = false;
+    }
+
+    private void InitializePause()
+    {
+        KeyBind bind = Input.GlobalListener.AddAction(new KeyBind("toggle pause", Keyboard.Key.Escape));
+        bind.AddOnDownCallback(TogglePause);
+    }
+
+    public void TogglePause()
+    {
+        _pauseMenuScene.IsRendered = _agarioScene.IsProcessed;
+        _agarioScene.IsProcessed = !_agarioScene.IsProcessed;
+    }
+    
     private void LoadConfigs()
     {
         ConfigLoader.LoadStaticFieldsFromFile(typeof(PlayerConfigs), "Configs/Player.cfg");
