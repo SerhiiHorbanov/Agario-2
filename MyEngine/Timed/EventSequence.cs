@@ -13,13 +13,18 @@ public sealed class EventSequence
     private long _tickOfStart;
     private long _tickOfNextCalled;
     private int _indexOfNextCalled;
+
+    public EventSequence()
+    {
+        _events = new();
+        _isPlaying = false;
+        OnFinished = Stop;
+    }
     
-    public EventSequence(List<TimedEvent> events)
+    public EventSequence(List<TimedEvent> events) : this()
     {
         foreach (TimedEvent timedEvent in events)
             AddEvent(timedEvent);
-        _isPlaying = false;
-        OnFinished = Stop;
     }
 
     public void AddEvent(TimedEvent timedEvent)
