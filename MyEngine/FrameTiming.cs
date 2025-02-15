@@ -46,7 +46,7 @@ public class FrameTiming
     private void UpdateDeltas()
     {
         _deltaTicks = DateTime.Now.Ticks - _lastTimingTick;
-        DeltaSeconds = (float)(_deltaTicks / TimeSpan.TicksPerSecond); 
+        DeltaSeconds = (float)_deltaTicks / TimeSpan.TicksPerSecond; 
     }
 
     private bool ShouldSleep()
