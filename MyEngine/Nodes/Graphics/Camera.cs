@@ -7,7 +7,7 @@ public class Camera : Node
 {
     private View _view;
     private RenderTarget _target;
-    private RenderLayer _renderedLayer;
+    public RenderLayer RenderedLayer;
     
     public Vector2f Position
     {
@@ -23,7 +23,7 @@ public class Camera : Node
 
     private Camera(uint renderedLayer)
     {
-        _renderedLayer = renderedLayer;
+        RenderedLayer = renderedLayer;
         _view = new();
     }
 
@@ -59,7 +59,7 @@ public class Camera : Node
     private void AddToRenderQueue(Node node, Queue<RenderedNode> queue)
     {
         if (node is RenderedNode rendered)
-            if (rendered.Layer == _renderedLayer)
+            if (rendered.Layer == RenderedLayer)
                 queue.Enqueue(rendered);
         
         foreach (Node child in node)
