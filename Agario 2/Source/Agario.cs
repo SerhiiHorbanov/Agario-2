@@ -32,8 +32,8 @@ public class Agario : Game
 
     private void InitializeScenes()
     {
-        InitializePauseMenu();
         InitializeGameplayScene();
+        InitializePauseMenu();
     }
 
     private void InitializeGameplayScene()
@@ -52,6 +52,28 @@ public class Agario : Game
         Scenes.Add("pause menu", SceneNode.CreateNewSceneWithCamera(Window));
         _pauseMenuScene = Scenes["pause menu"];
         _pauseMenuScene.IsRendered = false;
+        
+        TextNode text = TextNode.CreateTextNode();
+        text.MyText.DisplayedString = "Game is paused";
+        text.MyText.Position = new(Window.Size.X / 2, Window.Size.Y / 2);
+        _pauseMenuScene.AdoptChild(text);
+        
+        Text t = text.MyText;
+        List<TimedEvent> events = new()
+        {
+            new(0, () => t.DisplayedString = "Game is paused"),
+            new(0.4f, () => t.DisplayedString = "Game is paused."),
+            new(0.8f, () => t.DisplayedString = "Game is paused.."),
+            new(1.2f, () => t.DisplayedString = "Game is paused..."),
+            new(1.6f, () => t.DisplayedString = "Game is paused"),
+        };
+        
+        EventSequenceNode sequenceNode = EventSequenceNode.CreateEventSequenceNode(events);
+        sequenceNode.Sequence.Play();
+        sequenceNode.Sequence.OnFinished = sequenceNode.Sequence.Restart;
+        text.AdoptChild(sequenceNode);
+
+        _pauseMenuScene.GetDescendantOfType<Camera>().RenderedLayer = RenderLayer.UILayer;
     }
 
     private void InitializePause()
