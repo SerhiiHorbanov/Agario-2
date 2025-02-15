@@ -1,11 +1,18 @@
+using System.Collections;
+
 namespace MyEngine.Timed;
 
-public record struct TimedEvent(float TicksSinceStart, Action Action);
-
-public sealed class EventSequence
+public class TimedSequence<T>
 {
-    private SortedList<long, Action> _events;
+    public record struct Element(float Time, T Value)
+    {
+        public static implicit operator Element((float time, T val) tuple)
+            => new(tuple.time, tuple.val);
+    }
+    
+    private SortedList<long, T> _elements;
 
+    public Action<T> OnElementDue;
     public Action OnFinished;
     
     private bool _isPlaying;
@@ -14,23 +21,25 @@ public sealed class EventSequence
     private long _tickOfNextCalled;
     private int _indexOfNextCalled;
 
-    public EventSequence()
+    public TimedSequence()
     {
-        _events = new();
+        _elements = new();
         _isPlaying = false;
         OnFinished = Stop;
     }
-    
-    public EventSequence(List<TimedEvent> events) : this()
-    {
-        foreach (TimedEvent timedEvent in events)
-            AddEvent(timedEvent);
-    }
 
-    public void AddEvent(TimedEvent timedEvent)
+    public TimedSequence(List<Element> elements) : this()
+        => elements.ForEach(AddElement);
+    public TimedSequence(Action<T> onElementDue) : this()
+        => OnElementDue = onElementDue;
+    public TimedSequence(List<Element> elements, Action<T> onElementDue) : this(elements)
+        => OnElementDue = onElementDue;
+    
+    
+    public void AddElement(Element element)
     {
-        long timeSinceStart = (long)(timedEvent.TicksSinceStart * TimeSpan.TicksPerSecond);
-        _events.Add(timeSinceStart, timedEvent.Action);
+        long timeSinceStart = (long)(element.Time * TimeSpan.TicksPerSecond);
+        _elements.Add(timeSinceStart, element.Value);
     }
 
     public void Play()
@@ -55,7 +64,7 @@ public sealed class EventSequence
         _tickOfStart = _now - ticks;
 
         _indexOfNextCalled = GetFrameIndexByTick(ticks);
-        _tickOfNextCalled = _events.Keys[_indexOfNextCalled];
+        _tickOfNextCalled = _elements.Keys[_indexOfNextCalled];
         
         UpdateTickOfNextCalled();
     }
@@ -74,9 +83,9 @@ public sealed class EventSequence
     private int GetFrameIndexByTick(long ticks)
     {
         int i = 0;
-        while (i < _events.Count)
+        while (i < _elements.Count)
         {
-            if (_events.Keys[i] > ticks)
+            if (_elements.Keys[i] > ticks)
             {
                 i--;
                 break;
@@ -92,8 +101,8 @@ public sealed class EventSequence
     {
         if (i < 0)
             return 0;
-        if (i >= _events.Count)
-            return _events.Count - 1;
+        if (i >= _elements.Count)
+            return _elements.Count - 1;
         return i;
     }
 
@@ -106,7 +115,7 @@ public sealed class EventSequence
 
         _indexOfNextCalled++;
 
-        if (_indexOfNextCalled >= _events.Count)
+        if (_indexOfNextCalled >= _elements.Count)
         {
             Stop();
             OnFinished?.Invoke();
@@ -118,9 +127,9 @@ public sealed class EventSequence
 
     private void UpdateTickOfNextCalled()
     {
-        _tickOfNextCalled = _tickOfStart + _events.Keys[_indexOfNextCalled];
+        _tickOfNextCalled = _tickOfStart + _elements.Keys[_indexOfNextCalled];
     }
 
     private void InvokeCurrent() 
-        => _events.Values[_indexOfNextCalled]();
+        => OnElementDue?.Invoke(_elements.Values[_indexOfNextCalled]);
 }

@@ -59,16 +59,20 @@ public class Agario : Game
         _pauseMenuScene.AdoptChild(text);
         
         Text t = text.MyText;
-        List<TimedEvent> events = new()
-        {
-            new(0, () => t.DisplayedString = "Game is paused"),
-            new(0.4f, () => t.DisplayedString = "Game is paused."),
-            new(0.8f, () => t.DisplayedString = "Game is paused.."),
-            new(1.2f, () => t.DisplayedString = "Game is paused..."),
-            new(1.6f, () => t.DisplayedString = "Game is paused"),
-        };
+        TimedSequence<string> sequence = 
+            new(
+                new() {
+                    (0.0f, "Game is paused"),
+                    (0.4f, "Game is paused."),
+                    (0.8f, "Game is paused.."),
+                    (1.2f, "Game is paused..."),
+                    (1.6f, "Game is paused"), 
+                    (2.0f, "Game is paused"), 
+                }, 
+                (string newDisplayedString) => t.DisplayedString = newDisplayedString
+            );
         
-        EventSequenceNode sequenceNode = EventSequenceNode.CreateEventSequenceNode(events);
+        TimedSequenceNode<string> sequenceNode = TimedSequenceNode<string>.CreateEventSequenceNode(sequence);
         sequenceNode.Sequence.Play();
         sequenceNode.Sequence.OnFinished = sequenceNode.Sequence.Restart;
         text.AdoptChild(sequenceNode);
