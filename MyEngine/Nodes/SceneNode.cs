@@ -35,7 +35,6 @@ public sealed class SceneNode : Node
         Camera camera = Camera.CreateCamera(target);
         
         scene.AdoptChild(camera);
-        scene._activeCameras.Add(camera);
         
         return scene;
     }
