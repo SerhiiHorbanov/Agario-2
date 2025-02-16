@@ -54,7 +54,7 @@ public abstract class Game
 
     private void InitializeWindow()
     {
-        WindowConfigs configs = ConfigLoader.LoadFromFile<WindowConfigs>("Configs/Window.cfg");
+        WindowConfigs configs = ConfigLoader.LoadFromFile<WindowConfigs>("Resources/Configs/Window.cfg");
         
         Window = new (new(configs.Size.X, configs.Size.Y), configs.Name);
         Window.Closed += (sender, args) => Window.Close();
