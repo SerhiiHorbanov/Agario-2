@@ -5,8 +5,8 @@ namespace MyEngine.Nodes;
 
 public class Node : IEnumerable<Node>
 {
-    private List<Node> _children;
-    public Node Parent;
+    private readonly List<Node> _children;
+    public Node Parent { get; private set; }
 
     private bool _isKilled;
 
