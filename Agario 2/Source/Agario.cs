@@ -72,7 +72,7 @@ public class Agario : Game
                 (string newDisplayedString) => t.DisplayedString = newDisplayedString
             );
         
-        TimedSequenceNode<string> sequenceNode = TimedSequenceNode<string>.CreateEventSequenceNode(sequence);
+        SequenceNode<string> sequenceNode = SequenceNode<string>.CreateSequenceNode(sequence);
         sequenceNode.Sequence.Play();
         sequenceNode.Sequence.OnFinished = sequenceNode.Sequence.Restart;
         text.AdoptChild(sequenceNode);
