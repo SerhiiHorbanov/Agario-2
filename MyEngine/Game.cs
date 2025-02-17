@@ -27,6 +27,7 @@ public abstract class Game
 
     private void Initialization()
     {
+        InitializeConfigsPaths();
         InitializeWindow();
         InitializeSceneManager();
         InitializeInput();
@@ -34,6 +35,9 @@ public abstract class Game
         
         GameSpecificInitialization();
     }
+
+    private void InitializeConfigsPaths()
+        => FilePathsLibrary.LoadAndStorePathsFromFile("Resources/Configs/ConfigPaths.cfg");
 
     private void InitializeSceneManager()
     {
@@ -54,7 +58,7 @@ public abstract class Game
 
     private void InitializeWindow()
     {
-        WindowConfigs configs = ConfigLoader.LoadFromFile<WindowConfigs>("Resources/Configs/Window.cfg");
+        WindowConfigs configs = ConfigLoader.LoadFromFile<WindowConfigs>(FilePathsLibrary.GetPath("window configs"));
         
         Window = new (new(configs.Size.X, configs.Size.Y), configs.Name);
         Window.Closed += (sender, args) => Window.Close();
