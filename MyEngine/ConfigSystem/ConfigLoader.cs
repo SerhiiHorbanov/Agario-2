@@ -7,6 +7,27 @@ public static class ConfigLoader
 {
     public static ConfigValueParser ValueParser { private get; set; } = new ConfigValueParser();
 
+    public static void LoadIntoDictionary(string fileName, Dictionary<string, string> dictionary)
+    {
+        if (!File.Exists(fileName))
+            ThrowNoFileException(fileName);
+        
+        StreamReader stream = new(fileName);
+
+        while (!stream.EndOfStream)
+        {
+            string line = stream.ReadLine();
+
+            line = line.CutOffAfter("//");
+
+            if (line.Contains('='))
+            {
+                string[] split = line.Split('=');
+                dictionary.Add(split[0].Trim(), split[1].Trim());
+            }
+        }
+    }
+    
     public static T LoadFromFile<T>(string fileName) where T : new()
     {
         if (!File.Exists(fileName))
