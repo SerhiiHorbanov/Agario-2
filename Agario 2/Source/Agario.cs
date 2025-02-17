@@ -94,6 +94,7 @@ public class Agario : Game
     
     private void LoadConfigs()
     {
+        FilePathsLibrary.LoadAndStorePathsFromFile("Resources/Configs/SoundFiles.cfg");
         ConfigLoader.LoadStaticFieldsFromFile(typeof(PlayerConfigs), "Resources/Configs/Player.cfg");
         ConfigLoader.LoadStaticFieldsFromFile(typeof(MapConfigs), "Resources/Configs/Map.cfg");
         _mapBounds = new(new(), MapConfigs.Size);
@@ -117,10 +118,8 @@ public class Agario : Game
 
     private void InitializeSounds()
     {
-        SoundFilesConfigs configs = ConfigLoader.LoadFromFile<SoundFilesConfigs>("Resources/Configs/SoundFiles.cfg");
-        
-        SoundLibrary.LoadAndStoreSound(configs.DashFile, "dash");
-        SoundLibrary.StoreMusic(configs.InvincibleFile, "invincible");
+        SoundLibrary.LoadAndStoreSound(FilePathsLibrary.GetPath("dash"), "dash");
+        SoundLibrary.StoreMusic(FilePathsLibrary.GetPath("invincible"), "invincible");
         
         SoundManager.CreateMusic("invincible").WithOptions(new SoundOptions(loop: true, volume: 10)).Play();
     }
