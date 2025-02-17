@@ -5,11 +5,11 @@ namespace MyEngine.Nodes.Graphics;
 
 public struct SubtextureGenerator
 {
-    private Vector2i _size;
-    private Vector2i _offset;
-    private Vector2i _delta;
+    private readonly Vector2i _size;
+    private readonly Vector2i _offset;
+    private readonly Vector2i _delta;
     //rows not used when set to 0
-    private int _rowLength;
+    private readonly int _rowLength;
 
     public SubtextureGenerator(Vector2i size, Vector2i offset, int rowLength, Vector2i delta)
     {
