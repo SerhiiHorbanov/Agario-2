@@ -1,12 +1,23 @@
 using MyEngine.Nodes;
-using SFML.Graphics;
+using MyEngine.Utils;
 
 namespace MyEngine;
 
-// here instead of inheriting from Dictionary<string, SceneNode>, dictionary could be used directly with extension methods,
-// but I decided that just making it a new class would be simpler, cleaner and makes it
-public class SceneManager : Dictionary<string, SceneNode>
+public class SceneManager
 {
+    private Dictionary<string, SceneNode> _scenes;
+    
+    private List<(string name, SceneNode scene)> _scenesToAdd;
+
+    public SceneManager()
+    {
+        _scenesToAdd = new();
+        _scenes = new();
+    }
+
+    private Dictionary<string, SceneNode>.ValueCollection Values 
+        => _scenes.Values;
+    
     public void Render()
     {
         foreach (SceneNode scene in Values)
@@ -23,8 +34,32 @@ public class SceneManager : Dictionary<string, SceneNode>
             if(scene.IsProcessed) 
                 scene.UpdateScene(timing);
         }
+
+        RemoveKilledScenes();
+        AddScenesToAdd();
     }
-    
+
+    private void AddScenesToAdd()
+    {
+        while (_scenesToAdd.Count > 0)
+        {
+            _scenes.Add(_scenesToAdd[0].name, _scenesToAdd[0].scene);
+            _scenesToAdd.SwapRemoveAt(0);
+        }
+    }
+
+    private void RemoveKilledScenes()
+    {
+        for (int i = 0; i < _scenes.Count; i++)
+        {
+            if (!Values.ElementAt(i).IsKilled) 
+                continue;
+            Values.ElementAt(i).KillImmidiately();
+            _scenes.Remove(_scenes.ElementAt(i).Key);
+            i--;
+        }
+    }
+
     public void ProcessInput()
     {
         foreach (SceneNode scene in Values)
@@ -33,4 +68,24 @@ public class SceneManager : Dictionary<string, SceneNode>
                 scene.ProcessInput();
         }
     }
+
+    public void Add(string name, SceneNode scene)
+        => _scenesToAdd.Add((name, scene));
+
+    public SceneNode this[string name]
+    {
+        get
+        {
+            if (_scenes.ContainsKey(name)) 
+                return _scenes[name];
+            
+            foreach ((string name, SceneNode scene) tuple in _scenesToAdd)
+            {
+                if (name == tuple.name)
+                    return tuple.scene;
+            }
+
+            return null;
+        }
+    } 
 }
