@@ -102,9 +102,6 @@ public class Agario : Game
 
     private void LoadConfigs()
     {
-        FilePathsLibrary.LoadAndStorePathsFromFile(FilePathsLibrary.GetPath("texture files configs"));
-        FilePathsLibrary.LoadAndStorePathsFromFile(FilePathsLibrary.GetPath("sound files configs"));
-        
         ConfigLoader.LoadStaticFieldsFromFile(typeof(PlayerConfigs), FilePathsLibrary.GetPath("player configs"));
         ConfigLoader.LoadStaticFieldsFromFile(typeof(MapConfigs), FilePathsLibrary.GetPath("map configs"));
         _mapBounds = new(new(), MapConfigs.Size);

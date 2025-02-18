@@ -37,7 +37,7 @@ public abstract class Game
     }
 
     private void InitializeConfigsPaths()
-        => FilePathsLibrary.LoadAndStorePathsFromFile("Resources/Configs/ConfigPaths.cfg");
+        => FilePathsLibrary.LoadPaths();
 
     private void InitializeSceneManager()
     {
