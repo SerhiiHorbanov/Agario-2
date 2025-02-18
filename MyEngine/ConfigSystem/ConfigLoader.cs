@@ -1,3 +1,4 @@
+using System.Data;
 using System.Reflection;
 using MyEngine.Utils;
 
@@ -16,33 +17,33 @@ public static class ConfigLoader
 
         while (!stream.EndOfStream)
         {
-            string line = stream.ReadLine();
-
-            line = line.CutOffAfter("//");
-
+            string line = ReadLineWithoutComments(stream);
+            
             if (line.Contains('='))
-            {
-                string[] split = line.Split('=');
-                dictionary.Add(split[0].Trim(), split[1].Trim());
-            }
+                AddAssignmentToDictionary(line, dictionary);
         }
     }
-    
-    public static T LoadFromFile<T>(string fileName) where T : new()
+
+    private static void AddAssignmentToDictionary(string line, Dictionary<string, string> dictionary)
     {
+        string[] split = line.Split('=');
+        dictionary.Add(split[0].Trim(), split[1].Trim());
+    }
+    
+    public static T LoadFromFile<T>(string pathName) where T : new()
+    {
+        string fileName = FilePathsLibrary.GetPath(pathName);
+        
         if (!File.Exists(fileName))
             ThrowNoFileException(fileName);
         
         StreamReader file = new(fileName);
 
         T result = new();
-        Type type = typeof(T);
         
         while (!file.EndOfStream)
         {
-            string line = file.ReadLine();
-            
-            line = line.CutOffAfter("//");
+            string line = ReadLineWithoutComments(file);
             
             if (line.Contains('='))
                 TryAssignField(ref result, line);
@@ -92,16 +93,14 @@ public static class ConfigLoader
 
         while (!file.EndOfStream)
         {
-            string line = file.ReadLine();
-            
-            line = line.CutOffAfter("//");
+            string line = ReadLineWithoutComments(file);
             
             if (line.Contains('='))
                 TryAssignStaticField(type, line);
         }
     }
 
-    //Assignment is supposed to look like this: "FieldName = value"
+    // Assignment is supposed to look like this: "FieldName = value"
     private static void TryAssignStaticField(Type type, string assignment)
     {
         (string fieldName, string value) = GetNameAndValueOfAssignment(assignment);
@@ -122,6 +121,9 @@ public static class ConfigLoader
         field.SetValue(null, parsedValue);
     }
 
+    private static string ReadLineWithoutComments(StreamReader reader)
+        => reader.ReadLine().CutOffAfter("//");
+    
     private static void ThrowNoFieldException(string fieldName, Type type)
         => throw new Exception($"No field matches the name {fieldName} in assignment for type {type.FullName}");
 }
