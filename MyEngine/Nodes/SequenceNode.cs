@@ -9,7 +9,10 @@ public sealed class SequenceNode<T> : Node, IUpdatable
     public TimedSequence<T> Sequence;
 
     private SequenceNode(TimedSequence<T> sequence)
-        => Sequence = sequence;
+    {
+        Sequence = sequence;
+        UpdateLayer = UpdateLayer.Normal;
+    } 
 
     public static SequenceNode<T> CreateSequenceNode()
         => new (new());
