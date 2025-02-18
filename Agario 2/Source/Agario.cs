@@ -5,9 +5,7 @@ using MyEngine.ConfigSystem;
 using MyEngine.MyInput.InputActions;
 using MyEngine.Nodes;
 using MyEngine.Nodes.Graphics;
-using MyEngine.Nodes.UI;
 using MyEngine.SoundSystem;
-using MyEngine.Timed;
 using MyEngine.Utils;
 using SFML.Graphics;
 using SFML.System;
@@ -29,6 +27,21 @@ public class Agario : Game
         
         InitializeScenes();
         InitializePause();
+        InitializeRestart();
+    }
+
+    private void InitializeRestart()
+    {
+        KeyBind bind = Input.GlobalListener.AddAction(new KeyBind("restart", Keyboard.Key.R));
+        
+        bind.AddOnDownCallback(RestartGameplay);
+    }
+
+    private void RestartGameplay()
+    {
+        _agarioScene.Kill();
+
+        InitializeGameplayScene();
     }
 
     private void InitializeScenes()
@@ -37,10 +50,10 @@ public class Agario : Game
         InitializePauseMenu();
     }
 
-    private void InitializeGameplayScene()
+    private void InitializeGameplayScene(string name = "agario")
     {
-        Scenes.Add("agario", SceneNode.CreateNewScene());
-        _agarioScene = Scenes["agario"];
+        Scenes.Add(name, SceneNode.CreateNewScene());
+        _agarioScene = Scenes[name];
 
         AddUserPlayer();
 
@@ -65,7 +78,7 @@ public class Agario : Game
         bind.AddOnDownCallback(TogglePause);
     }
 
-    public void TogglePause()
+    private void TogglePause()
     {
         bool isPaused = !_agarioScene.IsUpdatingLayer(GameplayLayer);
 

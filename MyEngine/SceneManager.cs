@@ -76,14 +76,14 @@ public class SceneManager
     {
         get
         {
-            if (_scenes.ContainsKey(name)) 
-                return _scenes[name];
-            
             foreach ((string name, SceneNode scene) tuple in _scenesToAdd)
             {
                 if (name == tuple.name)
                     return tuple.scene;
             }
+            
+            if (_scenes.ContainsKey(name)) 
+                return _scenes[name];
 
             return null;
         }
