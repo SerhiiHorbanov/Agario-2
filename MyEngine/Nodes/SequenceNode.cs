@@ -4,7 +4,7 @@ namespace MyEngine.Nodes;
 
 public sealed class SequenceNode<T> : Node, IUpdatable
 {
-    public UpdateLayer UpdateLayer { get; }
+    public UpdateLayer UpdateLayer { get; set; }
     
     public TimedSequence<T> Sequence;
 

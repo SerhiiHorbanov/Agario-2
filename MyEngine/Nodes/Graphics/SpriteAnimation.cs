@@ -4,6 +4,7 @@ namespace MyEngine.Nodes.Graphics;
 
 public class SpriteAnimation : Node
 {
+    private UpdateLayer previousSequenceLayer;
     private SequenceNode<Subtexture> _sequence;
     public SequenceNode<Subtexture> Sequence
     {
@@ -14,7 +15,14 @@ public class SpriteAnimation : Node
             {
                 _sequence.Sequence.OnElementDue = null;
                 DetachChild(_sequence);
+                _sequence.UpdateLayer = previousSequenceLayer;
             }
+
+            if (value == null)
+                return;
+            
+            previousSequenceLayer = value.UpdateLayer;
+            value.UpdateLayer = UpdateLayer.Animations;
             
             value.Sequence.OnElementDue = ApplySubtexture;
             AdoptChild(value);
