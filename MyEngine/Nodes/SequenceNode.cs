@@ -11,6 +11,8 @@ public sealed class SequenceNode<T> : Node, IUpdatable
 
     public static SequenceNode<T> CreateSequenceNode()
         => new (new());
+    public static SequenceNode<T> CreateSequenceNode(List<TimedSequence<T>.Element> elements)
+        => new(new(elements));
     public static SequenceNode<T> CreateSequenceNode(TimedSequence<T> sequence)
         => new(sequence);
     
