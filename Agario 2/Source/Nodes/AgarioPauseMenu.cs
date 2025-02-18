@@ -21,18 +21,28 @@ public class AgarioPauseMenu : Node
     {
         AgarioPauseMenu result = new();
         
-        TextNode text = TextNode.CreateTextNode();
-        text.MyText.Position = new(windowSize.X / 2, windowSize.Y / 2);
-        result.AdoptChild(text);
-        
-        SequenceNode<string> sequenceNode = SequenceNode<string>.CreateSequenceNode(Elements);
-        text.AdoptChild(sequenceNode);
-        
-        sequenceNode.Sequence.OnFinished = sequenceNode.Sequence.Restart;
-        sequenceNode.Sequence.OnElementDue = (string displayedString) => text.MyText.DisplayedString = displayedString;
-        sequenceNode.Sequence.Play();
+        result.AdoptChild(CreateGamePausedText(windowSize));
         
         return result;
     }
 
+    private static TextNode CreateGamePausedText(Vector2u windowSize)
+    {
+        TextNode text = TextNode.CreateTextNode();
+        text.Position = new(windowSize.X / 2, windowSize.Y / 2);
+        
+        AddGamePausedAnimationToText(text);
+
+        return text;
+    }
+
+    private static void AddGamePausedAnimationToText(TextNode text)
+    {
+        SequenceNode<string> sequenceNode = SequenceNode<string>.CreateSequenceNode(Elements);
+        text.AdoptChild(sequenceNode);
+        
+        sequenceNode.Sequence.OnFinished = sequenceNode.Sequence.Restart;
+        sequenceNode.Sequence.OnElementDue = text.UpdateLine;
+        sequenceNode.Sequence.Play();
+    }
 }

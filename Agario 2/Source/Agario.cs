@@ -18,6 +18,7 @@ namespace Agario_2;
 public class Agario : Game
 {
     private static FloatRect _mapBounds;
+    private static readonly UpdateLayer GameplayLayer = UpdateLayer.Normal;
     private SceneNode _agarioScene;
     private SceneNode _pauseMenuScene;
     
@@ -66,10 +67,26 @@ public class Agario : Game
 
     public void TogglePause()
     {
-        _pauseMenuScene.IsRendered = _agarioScene.IsProcessed;
-        _agarioScene.IsProcessed = !_agarioScene.IsProcessed;
+        bool isPaused = !_agarioScene.IsUpdatingLayer(GameplayLayer);
+
+        if (isPaused)
+            Pause();
+        else
+            Unpause();
     }
     
+    private void Unpause()
+    {
+        _agarioScene.StopUpdatingLayer(GameplayLayer);
+        _pauseMenuScene.IsRendered = true;
+    }
+
+    private void Pause()
+    {
+        _agarioScene.StartUpdatingLayer(GameplayLayer);
+        _pauseMenuScene.IsRendered = false;
+    }
+
     private void LoadConfigs()
     {
         FilePathsLibrary.LoadAndStorePathsFromFile(FilePathsLibrary.GetPath("texture files configs"));
@@ -80,7 +97,7 @@ public class Agario : Game
         _mapBounds = new(new(), MapConfigs.Size);
     }
 
-    Camera AddConfiguredCamera()
+    private Camera AddConfiguredCamera()
     {
         Camera camera = Camera.CreateCamera(Window);
 
