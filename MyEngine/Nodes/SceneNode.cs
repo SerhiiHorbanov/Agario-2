@@ -15,6 +15,8 @@ public sealed class SceneNode : Node
     public bool IsRendered;
     public bool IsProcessed;
     
+    private readonly List<UpdateLayer> _notUpdated;
+    
     private SceneNode()
     {
         IsProcessed = true;
@@ -23,6 +25,7 @@ public sealed class SceneNode : Node
         _activeCameras = new();
         _updatables = new();
         _inputProcessors = new();
+        _notUpdated = new();
         _renderedNodes = new();
     }
     
@@ -55,15 +58,6 @@ public sealed class SceneNode : Node
             RegisterNodeAndChildren(child);
     }
 
-    private void EnsureCapacityForNode(Node node)
-    {
-        int amount = node.CountDescendants() + 1;
-        
-        _activeCameras.EnsureCapacity(_activeCameras.Count + amount);
-        _inputProcessors.EnsureCapacity(_inputProcessors.Count + amount);
-        _renderedNodes.EnsureCapacity(_renderedNodes.Count + amount);
-    }
-
     public void UnregisterNodeAndChildren(Node node)
     {
         if (node is Camera camera)
@@ -83,7 +77,7 @@ public sealed class SceneNode : Node
         UpdateInfo info = GetUpdateInfo(timing);
 
         foreach (IUpdatable each in _updatables)
-            each.Update(info);
+            UpdateIfLayerIsUpdated(each, info);
 
         KillNodesToKill();
     }
@@ -99,7 +93,33 @@ public sealed class SceneNode : Node
         foreach (IProcessesInput each in _inputProcessors)
             each.ProcessInput();
     }
+
+    public void StartUpdatingLayer(UpdateLayer layer)
+        => _notUpdated.Remove(layer);
+    public void StopUpdatingLayer(UpdateLayer layer)
+        => _notUpdated.Add(layer);
+    public bool IsUpdatingLayer(UpdateLayer layer)
+        => !_notUpdated.Contains(layer);
+    
+    private void EnsureCapacityForNode(Node node)
+    {
+        int amount = node.CountDescendants() + 1;
+        
+        _activeCameras.EnsureCapacity(_activeCameras.Count + amount);
+        _inputProcessors.EnsureCapacity(_inputProcessors.Count + amount);
+        _renderedNodes.EnsureCapacity(_renderedNodes.Count + amount);
+    }
     
     private UpdateInfo GetUpdateInfo(FrameTiming timing)
         => new(timing, this);
+
+    private void UpdateIfLayerIsUpdated(IUpdatable updatable, UpdateInfo info)
+    {
+        if (updatable.UpdateLayer == UpdateLayer.NeverUpdatingLayer)
+            return;
+        if (_notUpdated.Contains(updatable.UpdateLayer))
+            return;
+        
+        updatable.Update(info);
+    }
 }

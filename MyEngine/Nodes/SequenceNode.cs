@@ -4,6 +4,8 @@ namespace MyEngine.Nodes;
 
 public sealed class SequenceNode<T> : Node, IUpdatable
 {
+    public UpdateLayer UpdateLayer { get; }
+    
     public TimedSequence<T> Sequence;
 
     private SequenceNode(TimedSequence<T> sequence)
@@ -17,7 +19,5 @@ public sealed class SequenceNode<T> : Node, IUpdatable
         => new(sequence);
     
     public void Update(in UpdateInfo info)
-    {
-        Sequence.Update();
-    }
+        => Sequence?.Update();
 }

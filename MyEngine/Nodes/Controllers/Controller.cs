@@ -2,7 +2,14 @@ namespace MyEngine.Nodes.Controllers;
 
 public abstract class Controller<T> : Node, IUpdatable where T : Node
 {
+    public UpdateLayer UpdateLayer { get; set; }
+    
     private WeakReference<T> _controlled;
+
+    protected Controller()
+    {
+        UpdateLayer = UpdateLayer.Normal;
+    }
 
     protected T Controlled
     {

@@ -10,6 +10,9 @@ namespace Agario_2.Nodes;
 
 public class Player : Node, IUpdatable
 {
+    public UpdateLayer UpdateLayer 
+        => UpdateLayer.Normal;
+
     private EatableCircle _body;
     public Vector2f WishedDelta;
     private float _maxSpeed;
