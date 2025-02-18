@@ -24,6 +24,21 @@ public static class ConfigLoader
         }
     }
 
+    public static List<string> LoadList(string filePath)
+    {
+        if (!File.Exists(filePath))
+            ThrowNoFileException(filePath);
+        
+        StreamReader stream = new(filePath);
+        
+        List<string> result = new();
+        
+        while (!stream.EndOfStream)
+            result.Add(ReadLineWithoutComments(stream));
+
+        return result;
+    }
+    
     private static void AddAssignmentToDictionary(string line, Dictionary<string, string> dictionary)
     {
         string[] split = line.Split('=');
