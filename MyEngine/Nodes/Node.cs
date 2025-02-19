@@ -99,9 +99,6 @@ public class Node : IEnumerable<Node>
         return result;
     }
     
-    public T GetSiblingOfType<T>() where T : Node
-        => Parent.GetChildOfType<T>();    
-    
     public void DetachChild(Node child)
     {
         if (child == this)
