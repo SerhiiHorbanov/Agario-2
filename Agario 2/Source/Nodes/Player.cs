@@ -31,10 +31,9 @@ public class Player : Node, IUpdatable
                 _body.OnEaten -= Kill;
             }
 
+            AdoptChild(value);
+            value.OnEaten += Kill;
             _body = value;
-            
-            AdoptChild(_body);
-            _body.OnEaten += Kill;
         }
     }
     
