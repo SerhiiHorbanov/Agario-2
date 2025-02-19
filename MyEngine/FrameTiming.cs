@@ -2,7 +2,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace MyEngine;
 
-public class FrameTiming 
+public sealed class FrameTiming 
 {
     public float TargetFps
     {

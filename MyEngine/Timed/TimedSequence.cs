@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace MyEngine.Timed;
 
-public class TimedSequence<T>
+public sealed class TimedSequence<T>
 {
     public record struct Element(float Time, T Value)
     {
