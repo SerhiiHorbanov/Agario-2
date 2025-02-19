@@ -54,7 +54,7 @@ public class SceneManager
         {
             if (!Values.ElementAt(i).IsKilled) 
                 continue;
-            Values.ElementAt(i).KillImmidiately();
+            Values.ElementAt(i).KillImmediately();
             _scenes.Remove(_scenes.ElementAt(i).Key);
             i--;
         }

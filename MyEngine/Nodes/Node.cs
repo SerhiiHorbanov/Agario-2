@@ -122,7 +122,7 @@ public class Node : IEnumerable<Node>
     public void Kill()
         => _isKilled = true;
 
-    public void KillImmidiately()
+    public void KillImmediately()
     {
         Orphan();
         
