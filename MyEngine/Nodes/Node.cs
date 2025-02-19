@@ -103,11 +103,11 @@ public class Node : IEnumerable<Node>
     {
         if (child == this)
             return;
+        if (child.Parent != this)
+            return;
 
         if (IsInScene)
-        {
             (GetRootNode() as SceneNode)?.UnregisterNodeAndChildren(child);
-        }
         
         child.Parent = child;
         _children.Remove(child);
@@ -124,12 +124,12 @@ public class Node : IEnumerable<Node>
         Orphan();
         
         while (_children.Any())
-            _children[0].KillImmidiately();
+            _children[0].KillImmediately();
         
         (this as IDisposable)?.Dispose();
     }
     
-    public void KillNodesToKill()
+    protected void KillNodesToKill()
     {
         for (int i = 0; i < _children.Count; i++)
         {
@@ -137,7 +137,7 @@ public class Node : IEnumerable<Node>
 
             if (child._isKilled)
             {
-                child.KillImmidiately();
+                child.KillImmediately();
                 i--;
                 continue;
             }
@@ -158,9 +158,11 @@ public class Node : IEnumerable<Node>
     
     public Node AdoptChild(Node child)
     {
+        if (child == this || child.Parent == this)
+            return child;
+        
         child.Parent.DetachChild(child);
         child.Parent = this;
-        child._isKilled = false;
         _children.Add(child);
 
         if (!child.IsInScene && IsInScene)
