@@ -39,7 +39,7 @@ public class Agario : Game
 
     private void RestartGameplay()
     {
-        _agarioScene.Kill();
+        _agarioScene?.Kill();
 
         InitializeGameplayScene();
     }
@@ -50,10 +50,10 @@ public class Agario : Game
         InitializePauseMenu();
     }
 
-    private void InitializeGameplayScene(string name = "agario")
+    private void InitializeGameplayScene()
     {
-        Scenes.Add(name, SceneNode.CreateNewScene());
-        _agarioScene = Scenes[name];
+        Scenes.Add("agario", SceneNode.CreateNewScene());
+        _agarioScene = Scenes["agario"];
 
         AddUserPlayer();
 
