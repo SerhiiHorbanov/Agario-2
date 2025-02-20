@@ -156,7 +156,7 @@ public class Node : IEnumerable<Node>
         return current;
     }
     
-    public Node AdoptChild(Node child)
+    public T AdoptChild<T>(T child) where T : Node
     {
         if (child == this || child.Parent == this)
             return child;
