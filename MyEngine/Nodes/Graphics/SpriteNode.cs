@@ -1,3 +1,4 @@
+using MyEngine.ResourceLibraries;
 using SFML.Graphics;
 using SFML.System;
 
@@ -36,11 +37,14 @@ public class SpriteNode : RenderedNode
         Sprite = sprite;
     }
 
+    public static SpriteNode CreateSprite(RenderLayer layer, string textureName)
+        => new(layer, new(TextureLibrary.GetTexture(textureName)));
+    
     public static SpriteNode CreateSprite(RenderLayer layer, Sprite sprite)
-        => new(RenderLayer.NormalLayer, sprite);
+        => new(layer, sprite);
     
     public static SpriteNode CreateSprite(RenderLayer layer)
-        => CreateSprite(layer, new());
+        => CreateSprite(layer, new Sprite());
 
     public override void Draw(RenderTarget target, RenderStates states)
         => Sprite.Draw(target, states);
