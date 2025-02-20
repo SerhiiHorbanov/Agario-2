@@ -34,7 +34,7 @@ public class Agario : Game
     {
         KeyBind bind = Input.GlobalListener.AddAction(new KeyBind("restart", Keyboard.Key.R));
         
-        bind.AddOnDownCallback(RestartGameplay);
+        bind.AddOnStartedCallback(RestartGameplay);
     }
 
     private void RestartGameplay()
@@ -75,7 +75,7 @@ public class Agario : Game
     private void InitializePause()
     {
         KeyBind bind = Input.GlobalListener.AddAction(new KeyBind("toggle pause", Keyboard.Key.Escape));
-        bind.AddOnDownCallback(TogglePause);
+        bind.AddOnStartedCallback(TogglePause);
     }
 
     private void TogglePause()

@@ -15,14 +15,14 @@ public class PlayerController : InputBasedController<Player>, IProcessesInput
     {
         base.SetControlled(newControlled);
 
-        Input.GetAction<KeyBind>("dash").ResetOnDownCallbacks();
-        Input.GetAction<KeyBind>("body swap").ResetOnDownCallbacks();
+        Input.GetAction<KeyBind>("dash").ResetOnStartedCallbacks();
+        Input.GetAction<KeyBind>("body swap").ResetOnStartedCallbacks();
 
         if (newControlled == null)
             return;
         
-        Input.GetAction<KeyBind>("dash").AddOnDownCallback(Controlled.Dash);
-        Input.GetAction<KeyBind>("body swap").AddOnDownCallback(Controlled.SwapBodies);
+        Input.GetAction<KeyBind>("dash").AddOnStartedCallback(Controlled.Dash);
+        Input.GetAction<KeyBind>("body swap").AddOnStartedCallback(Controlled.SwapBodies);
     }
 
     public static PlayerController CreatePlayerController(InputSystem inputSystem, Player player = null)
