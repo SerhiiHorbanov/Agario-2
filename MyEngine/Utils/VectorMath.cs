@@ -5,6 +5,13 @@ namespace MyEngine.Utils;
 
 public static class VectorMath
 {
+    public static Vector2f Scale(this Vector2f a, Vector2f b)
+        => new(a.X * b.X, a.Y * b.Y);
+    public static Vector2f Scale(this Vector2f a, Vector2u b)
+        => a.Scale((Vector2f)b);
+    public static Vector2f Scale(this Vector2f a, Vector2i b)
+        => a.Scale((Vector2f)b);
+    
     public static float LengthSquared(this Vector2f vector)
         => vector.SquaredDistanceTo(new Vector2f(0, 0));
     
