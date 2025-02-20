@@ -54,6 +54,7 @@ public abstract class Game
     {
         Input = InputSystem.CreateInputSystem();
         MouseWheel.AddListenerTo(Window);
+        MouseInput.AddListenerTo(Window);
     }
 
     private void InitializeWindow()
@@ -80,7 +81,6 @@ public abstract class Game
     {
         Window.DispatchEvents();
         
-        MouseInput.UpdateInput(Window);
         Input.Update();
         
         Scenes.ProcessInput();
