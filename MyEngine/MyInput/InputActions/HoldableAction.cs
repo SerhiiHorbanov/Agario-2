@@ -35,6 +35,13 @@ public abstract class HoldableAction : InputAction
     public void ResetOnEndedCallbacks(Action newValue = null)
         => _onEnded = newValue;
 
+    public void ResetCallbacks()
+    {
+        ResetOnStartedCallbacks();
+        ResetOnHeldCallbacks();
+        ResetOnEndedCallbacks();
+    }
+    
     public override void Update()
     {
         _wasPressed = IsActive;
