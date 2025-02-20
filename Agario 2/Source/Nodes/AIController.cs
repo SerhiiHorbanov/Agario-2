@@ -5,13 +5,16 @@ using SFML.System;
 
 namespace Agario_2.Nodes;
 
-public class AiController : Controller<Player>, IUpdatable
+public class AiController : Controller<Player>
 {
     private Vector2f _currentWayPoint;
 
-    private const float MaxDistanceToWayPoint = 200;
+    private const float MaxDistanceToWayPoint = 500;
     private const float DistanceSquaredForNewWayPoint = 100;
 
+    private Vector2f Position
+        => Controlled?.Position ?? _currentWayPoint;
+    
     private AiController()
     { }
     
@@ -19,6 +22,7 @@ public class AiController : Controller<Player>, IUpdatable
     {
         base.SetControlled(newControlled);
         
+        _currentWayPoint = newControlled.Position;
         SetNewWayPoint();
     }
 
@@ -34,8 +38,8 @@ public class AiController : Controller<Player>, IUpdatable
 
     private void SetNewWayPoint()
     {
-        float x = MyRandom.GetFloatInDistance(_currentWayPoint.X, MaxDistanceToWayPoint);
-        float y = MyRandom.GetFloatInDistance(_currentWayPoint.Y, MaxDistanceToWayPoint);
+        float x = MyRandom.GetFloatInDistance(Position.X, MaxDistanceToWayPoint);
+        float y = MyRandom.GetFloatInDistance(Position.Y, MaxDistanceToWayPoint);
         
         _currentWayPoint = new(x, y);
     }
