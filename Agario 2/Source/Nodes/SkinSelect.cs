@@ -1,4 +1,3 @@
-using System.Xml;
 using MyEngine.MyInput;
 using MyEngine.Nodes;
 using MyEngine.Nodes.Graphics;
@@ -96,7 +95,7 @@ public class SkinSelect : Node
     }
 
     private void StartGame()
-        => _startGameAction(Color.Cyan);
+        => _startGameAction(Colors[_currentSkinIndex]);
 
     private void Next()
     {
