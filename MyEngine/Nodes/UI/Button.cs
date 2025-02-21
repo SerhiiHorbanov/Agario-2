@@ -63,7 +63,7 @@ public class Button : UINode, IDisposable
         Button result = new(window);
 
         inputSystem.AddListener(result._inputListener);
-        ClickBind bind = result._inputListener.AddAction(new ClickBind("button press", Mouse.Button.Left));
+        ClickBind bind = result._inputListener.AddAction(new ClickBind("button press", PressButton));
         bind.AddOnStartedCallback(result.OnMouseClicked);
         bind.AddOnEndedCallback(result.OnMouseReleased);
         
