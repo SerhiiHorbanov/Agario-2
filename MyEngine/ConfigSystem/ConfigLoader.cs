@@ -47,12 +47,12 @@ public static class ConfigLoader
     
     public static T LoadFromFile<T>(string pathName) where T : new()
     {
-        string fileName = FilePathsLibrary.GetPath(pathName);
+        string path = FilePathsLibrary.GetPath(pathName);
         
-        if (!File.Exists(fileName))
-            ThrowNoFileException(fileName);
+        if (!File.Exists(path))
+            ThrowNoFileException(path);
         
-        StreamReader file = new(fileName);
+        StreamReader file = new(path);
 
         T result = new();
         
@@ -99,12 +99,14 @@ public static class ConfigLoader
         return (fieldName, value);
     }
     
-    public static void LoadStaticFieldsFromFile(Type type, string fileName)
+    public static void LoadStaticFieldsFromFile(Type type, string pathName)
     {
-        if (!File.Exists(fileName))
-            ThrowNoFileException(fileName);
+        string path = FilePathsLibrary.GetPath(pathName);    
         
-        StreamReader file = new(fileName);
+        if (!File.Exists(path))
+            ThrowNoFileException(path);
+        
+        StreamReader file = new(path);
 
         while (!file.EndOfStream)
         {

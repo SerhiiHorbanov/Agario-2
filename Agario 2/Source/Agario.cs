@@ -23,11 +23,17 @@ public class Agario : Game
     protected override void GameSpecificInitialization()
     {
         LoadConfigs();
-        InitializeSounds();
+        InitializeResources();
+        InitializeMusic();
         
         InitializeScenes();
         InitializePause();
         InitializeRestart();
+    }
+
+    private void InitializeMusic()
+    {
+        SoundManager.CreateMusic("invincible").WithOptions(new SoundOptions(loop: true, volume: 10)).Play();
     }
 
     private void InitializeRestart()
@@ -102,8 +108,8 @@ public class Agario : Game
 
     private void LoadConfigs()
     {
-        ConfigLoader.LoadStaticFieldsFromFile(typeof(PlayerConfigs), FilePathsLibrary.GetPath("player configs"));
-        ConfigLoader.LoadStaticFieldsFromFile(typeof(MapConfigs), FilePathsLibrary.GetPath("map configs"));
+        ConfigLoader.LoadStaticFieldsFromFile(typeof(PlayerConfigs), "player configs");
+        ConfigLoader.LoadStaticFieldsFromFile(typeof(MapConfigs), "map configs");
         _mapBounds = new(new(), MapConfigs.Size);
     }
 
@@ -123,12 +129,10 @@ public class Agario : Game
         Input.GlobalListener.AddAction(new WheelScrollBind("zoom out", true)).AddCallback(() => camera.Size *= 1.2f);
     }
 
-    private void InitializeSounds()
+    private void InitializeResources()
     {
-        SoundLibrary.LoadAndStoreSound(FilePathsLibrary.GetPath("dash"), "dash");
-        SoundLibrary.StoreMusic(FilePathsLibrary.GetPath("invincible"), "invincible");
-        
-        SoundManager.CreateMusic("invincible").WithOptions(new SoundOptions(loop: true, volume: 10)).Play();
+        SoundLibrary.LoadAndStoreSoundFromPathsLibrary("dash");
+        SoundLibrary.StoreMusicFromPathsLibrary("invincible");
     }
 
     private void AddUserPlayer()
