@@ -4,6 +4,7 @@ using MyEngine.Nodes;
 using MyEngine.Nodes.Graphics;
 using MyEngine.SoundSystem;
 using MyEngine.Utils;
+using SFML.Graphics;
 using SFML.System;
 
 namespace Agario_2.Nodes;
@@ -166,4 +167,9 @@ public class Player : Node, IUpdatable
 
     private void UpdateMaxSpeed()
         => MaxSpeed = PlayerConfigs.StartingMaxSpeed / float.Max(1, float.Log10(Radius - PlayerConfigs.StartingRadius));
+
+    public void SetSkin(Color skin)
+    {
+        Body.Color = skin;
+    }
 }

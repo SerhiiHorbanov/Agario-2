@@ -28,6 +28,12 @@ public class EatableCircle : Node
         }
     }
 
+    public Color Color
+    {
+        get => _sprite.UnderlyingShape.FillColor;
+        set => _sprite.UnderlyingShape.FillColor = value;
+    }
+    
     public static EatableCircle CreateEatableCircle(float radius, Vector2f position)
     {
         EatableCircle result = new();
