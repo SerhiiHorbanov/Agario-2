@@ -21,7 +21,7 @@ public class ShapeSprite<T> : RenderedNode where T : Shape
         set => UnderlyingShape.FillColor = value;
     }
 
-    public static ShapeSprite<CircleShape> CreateCircleSprite(float radius)
+    public static ShapeSprite<CircleShape> CreateCircleSprite(float radius = 0)
         => new(new(radius));
 
     public static ShapeSprite<RectangleShape> CreateRectangleSprite(Vector2f size)
