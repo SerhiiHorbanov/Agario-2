@@ -5,6 +5,7 @@ using MyEngine.ConfigSystem;
 using MyEngine.MyInput.InputActions;
 using MyEngine.Nodes;
 using MyEngine.Nodes.Graphics;
+using MyEngine.ResourceLibraries;
 using MyEngine.SoundSystem;
 using MyEngine.Utils;
 using SFML.Graphics;
@@ -19,6 +20,9 @@ public class Agario : Game
     private static readonly UpdateLayer GameplayLayer = UpdateLayer.Normal;
     private SceneNode _agarioScene;
     private SceneNode _pauseMenuScene;
+    private SceneNode _skinSelectScene;
+    
+    private GameplayOptions _lastGameplayOptions;
     
     protected override void GameSpecificInitialization()
     {
@@ -26,7 +30,12 @@ public class Agario : Game
         InitializeResources();
         InitializeMusic();
         
-        InitializeScenes();
+        GoToSkinSelect();
+        InitializeGameplayKeybinds();
+    }
+
+    private void InitializeGameplayKeybinds()
+    {
         InitializePause();
         InitializeRestart();
     }
@@ -40,28 +49,32 @@ public class Agario : Game
     {
         KeyBind bind = Input.GlobalListener.AddAction(new KeyBind("restart", Keyboard.Key.R));
         
-        bind.AddOnStartedCallback(RestartGameplay);
+        bind.AddOnStartedCallback(GoToGameplay);
     }
 
-    private void RestartGameplay()
+    private void GoToGameplay()
     {
-        _agarioScene?.Kill();
-
-        InitializeGameplayScene();
+        if (_lastGameplayOptions == null) 
+            _lastGameplayOptions = new();
+        
+        GoToGameplay(_lastGameplayOptions);
     }
-
-    private void InitializeScenes()
+    
+    private void GoToGameplay(GameplayOptions gameplayOptions)
     {
-        InitializeGameplayScene();
+        _lastGameplayOptions = gameplayOptions;
+        Scenes.KillAllScenes();
+
+        InitializeGameplayScene(gameplayOptions);
         InitializePauseMenu();
     }
 
-    private void InitializeGameplayScene()
+    private void InitializeGameplayScene(GameplayOptions gameplayOptions)
     {
         Scenes.Add("agario", SceneNode.CreateNewScene());
         _agarioScene = Scenes["agario"];
 
-        AddUserPlayer();
+        AddUserPlayer(gameplayOptions.PlayerSkin);
 
         _agarioScene.AdoptChild(FoodPool.CreateFoodPool(MapConfigs.FoodAmount, _mapBounds));
         AddAiPlayers(MapConfigs.AiPlayersAmount);
@@ -76,6 +89,21 @@ public class Agario : Game
         _pauseMenuScene.AdoptChild(AgarioPauseMenu.CreateAgarioPauseMenu(Window.Size));
 
         _pauseMenuScene.GetDescendantOfType<Camera>().RenderedLayer = RenderLayer.UILayer;
+    }
+
+    private void GoToSkinSelect()
+    {
+        Scenes.KillAllScenes();
+        
+        InitializeSkinSelect();
+    }
+
+    private void InitializeSkinSelect()
+    {
+        Scenes.Add("skin select menu", SceneNode.CreateNewScene());
+        _skinSelectScene = Scenes["skin select menu"];
+
+        _skinSelectScene.AdoptChild(SkinSelect.Create(Window, Input, (Color color) => GoToGameplay(new(color))));
     }
 
     private void InitializePause()
@@ -131,17 +159,22 @@ public class Agario : Game
 
     private void InitializeResources()
     {
+        TextureLibrary.LoadAndStoreTextureFromPathsLibrary("select skin button");
+        TextureLibrary.LoadAndStoreTextureFromPathsLibrary("previous skin button");
+        TextureLibrary.LoadAndStoreTextureFromPathsLibrary("next skin button");
+        
         SoundLibrary.LoadAndStoreSoundFromPathsLibrary("dash");
         SoundLibrary.StoreMusicFromPathsLibrary("invincible");
     }
 
-    private void AddUserPlayer()
+    private void AddUserPlayer(Color skin)
     {
         Vector2f position = _mapBounds.RandomPositionInside();
         
         Player player = Player.CreatePlayerWithNoController(position);
         player.DraggedCamera = AddConfiguredCamera();
         
+        player.SetSkin(skin);
         _agarioScene.AdoptChild(player);
         _agarioScene.AdoptChild(PlayerController.CreatePlayerController(Input, player));
     }
