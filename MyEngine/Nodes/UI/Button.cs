@@ -29,7 +29,7 @@ public class Button : UINode, IDisposable
     private FloatRect PressableArea 
         => _sprite.Sprite.GetGlobalBounds();
 
-    private Button(WindowBase window) : base(window)
+    private Button(Camera camera) : base(camera)
     {
         _inputListener = new();
     }
@@ -41,9 +41,10 @@ public class Button : UINode, IDisposable
 
     private void OnMouseClicked()
     {
-        Vector2i mousePosition = Mouse.GetPosition(Window);
+        Vector2i mousePositionOnView = Camera.CalculatePositionOnView((Vector2i)MouseInput.MousePositionOnWindow);
+        Vector2i position = mousePositionOnView + (Vector2i)Camera.LeftTop;
         
-        if (PressableArea.Contains(mousePosition))
+        if (PressableArea.Contains(position))
         {
             IsPressed = true;
             OnPressed?.Invoke();
@@ -58,9 +59,9 @@ public class Button : UINode, IDisposable
         IsPressed = false;
     }
     
-    public static Button CreateButton(WindowBase window, InputSystem inputSystem)
+    public static Button CreateButton(Camera camera, InputSystem inputSystem)
     {
-        Button result = new(window);
+        Button result = new(camera);
 
         inputSystem.AddListener(result._inputListener);
         ClickBind bind = result._inputListener.AddAction(new ClickBind("button press", PressButton));
@@ -72,9 +73,9 @@ public class Button : UINode, IDisposable
         return result;
     }
 
-    public static Button CreateButton(WindowBase window, InputSystem inputSystem, string textureName)
+    public static Button CreateButton(Camera camera, InputSystem inputSystem, string textureName)
     {
-        Button result = CreateButton(window, inputSystem);
+        Button result = CreateButton(camera, inputSystem);
         
         result.Sprite.Texture = TextureLibrary.GetTexture(textureName);
         

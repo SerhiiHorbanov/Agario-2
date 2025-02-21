@@ -8,21 +8,21 @@ namespace MyEngine.Nodes.UI;
 
 public abstract class UINode : Node
 {
-    protected WindowBase Window;
+    protected readonly Camera Camera;
 
     private Vector2f _anchorOnTarget;
     private Vector2i _offset;
     
     private Vector2i AnchorOffset 
-        => (Vector2i)_anchorOnTarget.Scale(Window.Size);
+        => (Vector2i)_anchorOnTarget.Scale(Camera.Size);
 
     public Vector2f AnchorOnTarget
     {
         get => _anchorOnTarget;
         set
         {
-            _offset += (Vector2i)(value - _anchorOnTarget);
             _anchorOnTarget = value;
+            OnPositionSet();
         }
     }
 
@@ -38,7 +38,7 @@ public abstract class UINode : Node
     
     public Vector2i Position
     {
-        get => (Vector2i)_anchorOnTarget.Scale(Window.Size) + _offset;
+        get => (Vector2i)_anchorOnTarget.Scale(Camera.Size) + _offset;
         set
         {
             _offset = value - AnchorOffset;
@@ -46,9 +46,9 @@ public abstract class UINode : Node
         }
     }
 
-    protected UINode(WindowBase window)
+    protected UINode(Camera camera)
     {
-        Window = window;
+        Camera = camera;
     }
 
     protected abstract void OnPositionSet();
