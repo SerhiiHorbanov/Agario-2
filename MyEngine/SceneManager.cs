@@ -72,6 +72,12 @@ public class SceneManager
     public void Add(string name, SceneNode scene)
         => _scenesToAdd.Add((name, scene));
 
+    public void KillAllScenes()
+    {
+        foreach (SceneNode scene in Values)
+            scene.Kill();
+    }
+    
     public SceneNode this[string name]
     {
         get
