@@ -1,3 +1,4 @@
+using MyEngine.Utils;
 using SFML.Graphics;
 using SFML.System;
 
@@ -15,12 +16,21 @@ public class Camera : Node
         set => _view.Center = value;
     }
 
+    public Vector2f LeftTop
+    {
+        get => _view.Center - HalfSize;
+        set => _view.Center = value + HalfSize;
+    }
+    
     public Vector2f Size
     {
         get => _view.Size;
         set => _view.Size = value;
     }
 
+    public Vector2f HalfSize
+        => _view.Size / 2;
+    
     private Camera(uint renderedLayer)
     {
         RenderedLayer = renderedLayer;
@@ -64,6 +74,16 @@ public class Camera : Node
         
         foreach (Node child in node)
             AddToRenderQueue(child, queue);
+    }
+
+    // DOES NOT support rotated views
+    public Vector2i CalculatePositionOnView(Vector2i positionOnTarget)
+    {
+        Vector2f inverseSize = new(1f / _target.Size.X, 1f / _target.Size.Y);
+
+        Vector2f proportionalPositionOnTarget = ((Vector2f)positionOnTarget).Scale(inverseSize);
+        
+        return (Vector2i)proportionalPositionOnTarget.Scale(Size);
     }
     
     private void ApplyView()
