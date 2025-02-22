@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace MyEngine.Timed;
 
 public sealed class TimedSequence<T>
@@ -28,6 +26,14 @@ public sealed class TimedSequence<T>
         OnFinished = Stop;
     }
 
+    // DOES NOT copy OnFinished
+    public TimedSequence(TimedSequence<T> other)
+    {
+        _elements = new(other._elements);
+        _isPlaying = other._isPlaying;
+        OnElementDue = other.OnElementDue;
+    }
+    
     public TimedSequence(List<Element> elements) : this()
         => elements.ForEach(AddElement);
     public TimedSequence(Action<T> onElementDue) : this()
