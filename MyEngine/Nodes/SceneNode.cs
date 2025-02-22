@@ -32,15 +32,18 @@ public sealed class SceneNode : Node
     public static SceneNode CreateNewScene()
         => new();
 
-    public static SceneNode CreateNewSceneWithCamera(RenderTarget target)
+    public static SceneNode CreateNewSceneWithCamera(RenderTarget target, RenderLayer cameraRenderLayer)
     {
         SceneNode scene = new();
-        Camera camera = Camera.CreateCamera(target);
+        Camera camera = Camera.CreateCamera(target, cameraRenderLayer);
         
         scene.AdoptChild(camera);
         
         return scene;
     }
+
+    public static SceneNode CreateNewSceneWithCamera(RenderTarget target)
+        => CreateNewSceneWithCamera(target, RenderLayer.NormalLayer);
     
     public void RegisterNodeAndChildren(Node node)
     {

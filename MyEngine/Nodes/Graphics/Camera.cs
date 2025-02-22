@@ -28,32 +28,28 @@ public class Camera : Node
         set => _view.Size = value;
     }
 
-    public Vector2f HalfSize
+    private Vector2f HalfSize
         => _view.Size / 2;
     
-    private Camera(uint renderedLayer)
+    private Camera(RenderLayer renderedLayer)
     {
         RenderedLayer = renderedLayer;
         _view = new();
     }
 
-    public static Camera CreateCamera(RenderTarget target)
+    public static Camera CreateCamera(RenderTarget target, RenderLayer layer)
     {
-        Camera result = new(1);
+        Camera result = new(layer);
 
         result._target = target;
         
         return result;
     }
     
+    public static Camera CreateCamera(RenderTarget target)
+        => CreateCamera(target, RenderLayer.NormalLayer);
     public static Camera CreateUICamera(RenderTarget target)
-    {
-        Camera result = new(2);
-
-        result._target = target;
-        
-        return result;
-    }
+        => CreateCamera(target, RenderLayer.UILayer);
     
     public void Render(Node rootNode)
     {
