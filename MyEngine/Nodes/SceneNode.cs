@@ -88,7 +88,7 @@ public sealed class SceneNode : Node
     public void RenderScene()
     {
         foreach (Camera eachCamera in _activeCameras)
-            eachCamera.Render(this);
+            eachCamera.Render(_renderedNodes);
     }
 
     public void ProcessInput()

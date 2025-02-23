@@ -51,14 +51,11 @@ public class Camera : Node
     public static Camera CreateUICamera(RenderTarget target)
         => CreateCamera(target, RenderLayer.UILayer);
     
-    public void Render(Node rootNode)
+    public void Render(List<RenderedNode> renderedNodes)
     {
-        Queue<RenderedNode> renderQueue = new();
-        AddToRenderQueue(rootNode, renderQueue);
-
         ApplyView();
         
-        foreach (RenderedNode renderedNode in renderQueue)
+        foreach (RenderedNode renderedNode in renderedNodes)
             renderedNode.Draw(_target, RenderStates.Default);
     }
     
