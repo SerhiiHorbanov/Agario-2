@@ -7,10 +7,10 @@ namespace MyEngine;
 
 public abstract class Game
 {
-    protected RenderWindow Window;
-    protected SceneManager Scenes;
-    protected InputSystem Input;
-    protected FrameTiming Time;
+    protected RenderWindow Window { get; private set; }
+    protected SceneManager Scenes { get; private set; }
+    protected InputSystem Input { get; private set; }
+    protected FrameTiming Time { get; private set; }
 
     public void Run()
     {
