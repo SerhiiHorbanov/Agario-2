@@ -48,12 +48,12 @@ public class SkinPreview : UINode
         }
     }
 
-    private SkinPreview(Camera camera) : base(camera)
+    private SkinPreview(UICanvas canvas) : base(canvas)
     { }
     
-    public static SkinPreview CreatePreview(Camera camera, Color color)
+    public static SkinPreview CreatePreview(UICanvas canvas, Color color)
     {
-        SkinPreview result = new(camera);
+        SkinPreview result = new(canvas);
         
         result.BodyVisuals = ShapeSprite<CircleShape>.CreateCircleSprite();
         result.Radius = DefaultRadius;
@@ -64,6 +64,6 @@ public class SkinPreview : UINode
     
     protected override void OnPositionSet()
     {
-        _bodyVisuals.Position = (Vector2f)Position + Camera.LeftTop;
+        _bodyVisuals.Position = (Vector2f)Position + Canvas.Camera.LeftTop;
     }
 }

@@ -29,7 +29,7 @@ public class Button : UINode, IDisposable
     private FloatRect PressableArea 
         => _sprite.Sprite.GetGlobalBounds();
 
-    private Button(Camera camera) : base(camera)
+    private Button(UICanvas canvas) : base(canvas)
     {
         _inputListener = new();
     }
@@ -41,8 +41,9 @@ public class Button : UINode, IDisposable
 
     private void OnMouseClicked()
     {
-        Vector2i mousePositionOnView = Camera.CalculatePositionOnView((Vector2i)MouseInput.MousePositionOnWindow);
-        Vector2i position = mousePositionOnView + (Vector2i)Camera.LeftTop;
+        Camera camera = Canvas.Camera;
+        Vector2i mousePositionOnView = camera.CalculatePositionOnView((Vector2i)MouseInput.MousePositionOnWindow);
+        Vector2i position = mousePositionOnView + (Vector2i)camera.LeftTop;
         
         if (PressableArea.Contains(position))
         {
@@ -59,23 +60,25 @@ public class Button : UINode, IDisposable
         IsPressed = false;
     }
     
-    public static Button CreateButton(Camera camera, InputSystem inputSystem)
+    public static Button CreateButton(UICanvas canvas)
     {
-        Button result = new(camera);
+        Button button = new(canvas);
+        canvas.AdoptChild(button);
 
-        inputSystem.AddListener(result._inputListener);
-        ClickBind bind = result._inputListener.AddAction(new ClickBind("button press", PressButton));
-        bind.AddOnStartedCallback(result.OnMouseClicked);
-        bind.AddOnEndedCallback(result.OnMouseReleased);
+        canvas.Input.AddListener(button._inputListener);
         
-        result.Sprite = SpriteNode.CreateSprite(RenderLayer.UILayer);
+        ClickBind bind = button._inputListener.AddAction(new ClickBind("button press", PressButton));
+        bind.AddOnStartedCallback(button.OnMouseClicked);
+        bind.AddOnEndedCallback(button.OnMouseReleased);
+        
+        button.Sprite = SpriteNode.CreateSprite(RenderLayer.UILayer);
 
-        return result;
+        return button;
     }
 
-    public static Button CreateButton(Camera camera, InputSystem inputSystem, string textureName)
+    public static Button CreateButton(UICanvas canvas, string textureName)
     {
-        Button result = CreateButton(camera, inputSystem);
+        Button result = CreateButton(canvas);
         
         result.Sprite.Texture = TextureLibrary.GetTexture(textureName);
         

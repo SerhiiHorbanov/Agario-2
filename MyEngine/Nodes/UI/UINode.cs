@@ -1,20 +1,18 @@
 using MyEngine.Nodes.Graphics;
 using MyEngine.Utils;
-using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 namespace MyEngine.Nodes.UI;
 
 public abstract class UINode : Node
 {
-    protected readonly Camera Camera;
+    protected readonly UICanvas Canvas;
 
     private Vector2f _anchorOnTarget;
     private Vector2i _offset;
     
     private Vector2i AnchorOffset 
-        => (Vector2i)_anchorOnTarget.Scale(Camera.Size);
+        => (Vector2i)_anchorOnTarget.Scale(Canvas.Size);
 
     public Vector2f AnchorOnTarget
     {
@@ -38,7 +36,7 @@ public abstract class UINode : Node
     
     public Vector2i Position
     {
-        get => (Vector2i)_anchorOnTarget.Scale(Camera.Size) + _offset;
+        get => AnchorOffset + _offset;
         set
         {
             _offset = value - AnchorOffset;
@@ -46,10 +44,14 @@ public abstract class UINode : Node
         }
     }
 
-    protected UINode(Camera camera)
+    
+    protected UINode(UICanvas canvas)
     {
-        Camera = camera;
+        Canvas = canvas;
     }
 
+    protected Vector2i CalculatePositionOnView(Vector2f positionOnTarget)
+        => Canvas.Camera.CalculatePositionOnView((Vector2i)positionOnTarget);
+    
     protected abstract void OnPositionSet();
 }

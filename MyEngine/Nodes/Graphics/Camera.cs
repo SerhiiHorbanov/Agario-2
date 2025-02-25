@@ -7,7 +7,7 @@ namespace MyEngine.Nodes.Graphics;
 public class Camera : Node
 {
     private View _view;
-    private RenderTarget _target;
+    public RenderTarget Target;
     public RenderLayer RenderedLayer;
     
     public Vector2f Position
@@ -41,7 +41,7 @@ public class Camera : Node
     {
         Camera result = new(layer);
 
-        result._target = target;
+        result.Target = target;
         
         return result;
     }
@@ -56,7 +56,7 @@ public class Camera : Node
         ApplyView();
         
         foreach (RenderedNode renderedNode in renderedNodes)
-            renderedNode.Draw(_target, RenderStates.Default);
+            renderedNode.Draw(Target, RenderStates.Default);
     }
     
     private void AddToRenderQueue(Node node, Queue<RenderedNode> queue)
@@ -72,7 +72,7 @@ public class Camera : Node
     // DOES NOT support rotated views
     public Vector2i CalculatePositionOnView(Vector2i positionOnTarget)
     {
-        Vector2f inverseSize = new(1f / _target.Size.X, 1f / _target.Size.Y);
+        Vector2f inverseSize = new(1f / Target.Size.X, 1f / Target.Size.Y);
 
         Vector2f proportionalPositionOnTarget = ((Vector2f)positionOnTarget).Scale(inverseSize);
         
@@ -80,5 +80,5 @@ public class Camera : Node
     }
     
     private void ApplyView()
-        => _target.SetView(_view);
+        => Target.SetView(_view);
 }

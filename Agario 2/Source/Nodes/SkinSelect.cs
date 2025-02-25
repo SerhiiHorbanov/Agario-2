@@ -51,38 +51,40 @@ public class SkinSelect : Node
     {
         SkinSelect result = new();
 
-        Camera camera = result.AdoptChild(Camera.CreateUICamera(target));
+        UICanvas canvas = UICanvas.CreateCanvas(target, input);
 
-        result.InitializeSkinPreview(camera);
-        result.InitializeSelectButton(input, startGame, result);
-        result.InitializeDirectionButtons(camera, input);
+        result.AdoptChild(canvas);
+        
+        result.InitializeSkinPreview(canvas);
+        result.InitializeSelectButton(canvas, startGame);
+        result.InitializeDirectionButtons(canvas);
         
         return result;
     }
 
-    private void InitializeSkinPreview(Camera camera)
+    private void InitializeSkinPreview(UICanvas canvas)
     {
-        _skinPreview = AdoptChild(SkinPreview.CreatePreview(camera, Colors[_currentSkinIndex]));
+        _skinPreview = AdoptChild(SkinPreview.CreatePreview(canvas, Colors[_currentSkinIndex]));
         
         _skinPreview.AnchorOnTarget = SkinPreviewAnchor;
         _skinPreview.RenderLayer = RenderLayer.UILayer;
     }
 
-    private void InitializeSelectButton(InputSystem input, Action<Color> startGame, SkinSelect result)
+    private void InitializeSelectButton(UICanvas canvas, Action<Color> startGame)
     {
-        Button selectButton = result.AdoptChild(Button.CreateButton(result.GetChildOfType<Camera>(), input, "select skin button"));
+        Button selectButton = canvas.AddButton("select skin button");
         
         selectButton.AnchorOnTarget = SelectButtonAnchor;
         selectButton.Offset = SelectButtonOffset;
         
-        result._startGameAction = startGame;
-        selectButton.OnPressed += result.StartGame;
+        _startGameAction = startGame;
+        selectButton.OnPressed += StartGame;
     }
 
-    private void InitializeDirectionButtons(Camera camera, InputSystem input)
+    private void InitializeDirectionButtons(UICanvas canvas)
     {
-        Button previousSkinButton = AdoptChild(Button.CreateButton(camera, input, "previous skin button"));
-        Button nextSkinButton = AdoptChild(Button.CreateButton(camera, input, "next skin button"));
+        Button previousSkinButton = canvas.AddButton("previous skin button");
+        Button nextSkinButton = canvas.AddButton("next skin button");
         
         previousSkinButton.AnchorOnTarget = PreviousSkinButtonAnchor;
         nextSkinButton.AnchorOnTarget = NextSkinButtonAnchor;
