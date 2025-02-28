@@ -18,7 +18,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Resources\" />
+      <Folder Include="Resources\Configs\" />
+      <Folder Include="Resources\Textures\" />
     </ItemGroup>
 
 </Project>
