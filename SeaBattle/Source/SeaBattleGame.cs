@@ -2,6 +2,7 @@ using MyEngine;
 using MyEngine.Nodes;
 using MyEngine.Nodes.Graphics;
 using MyEngine.ResourceLibraries;
+using SeaBattle.Nodes;
 
 namespace SeaBattle;
 

@@ -2,7 +2,7 @@ using MyEngine.Nodes;
 using MyEngine.Utils;
 using SFML.System;
 
-namespace SeaBattle;
+namespace SeaBattle.Nodes;
 
 public class PlayerMap : Node
 {

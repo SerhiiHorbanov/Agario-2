@@ -4,7 +4,7 @@ using MyEngine.ResourceLibraries;
 using SFML.Graphics;
 using SFML.System;
 
-namespace SeaBattle;
+namespace SeaBattle.Nodes;
 
 public enum ShootingResult
 {

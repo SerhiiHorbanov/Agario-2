@@ -1,11 +1,10 @@
 using MyEngine.MyInput;
 using MyEngine.MyInput.InputActions;
 using MyEngine.Nodes;
-using MyEngine.Nodes.Controllers;
 using SFML.System;
 using SFML.Window;
 
-namespace SeaBattle;
+namespace SeaBattle.Nodes;
 
 public class SeaBattleGameRules : Node
 {

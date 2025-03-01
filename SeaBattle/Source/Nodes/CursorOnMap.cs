@@ -1,9 +1,8 @@
-using System.IO.Pipes;
 using MyEngine.Nodes;
 using SFML.Graphics;
 using SFML.System;
 
-namespace SeaBattle;
+namespace SeaBattle.Nodes;
 
 public class CursorOnMap : Node
 {
