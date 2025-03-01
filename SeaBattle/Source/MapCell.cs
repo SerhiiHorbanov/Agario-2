@@ -66,15 +66,17 @@ public class MapCell : Node
     }
 
     public void AddTag(CellTag tag)
-        => _state.Add(tag);
-    
+    {
+        _state.Add(tag);
+        UpdateTexture();
+    }   
+
     public ShootingResult GetShot()
     {
         if (IsShot)
             return ShootingResult.Miss;
         
-        _state.Add(CellTag.Shot);
-        UpdateTexture();
+        AddTag(CellTag.Shot);
 
         if (_state.Has(CellTag.HasShip))
             return ShootingResult.Hit;
