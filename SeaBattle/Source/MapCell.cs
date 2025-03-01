@@ -1,5 +1,6 @@
 using MyEngine.Nodes;
 using MyEngine.Nodes.Graphics;
+using MyEngine.ResourceLibraries;
 using SFML.Graphics;
 using SFML.System;
 
@@ -17,13 +18,8 @@ public class MapCell : Node
     private readonly CellState _state;
     private bool _isHidden;
 
-    private static readonly Texture HiddenTexture = new Texture("Resources/Textures/Cells/Hidden.png");
-    private static readonly (CellState, Texture)[] CellTextures =
-    [
-        (new([CellTag.HasShip, CellTag.Shot]), new("Resources/Textures/Cells/Shot ship.png")),
-        (new([CellTag.HasShip]), new("Resources/Textures/Cells/Ship.png")),
-        (new([]), new("Resources/Textures/Cells/Empty.png")),
-    ];
+    private static Texture _hiddenTexture;
+    private static readonly List<(CellState, Texture)> CellTextures = [];
 
     private bool IsShot
         => _state.IsShot;
@@ -50,6 +46,14 @@ public class MapCell : Node
         _state = state;
         _isHidden = false;
     }
+
+    public static void InitializeLoadedCellTextures()
+    {
+        _hiddenTexture = TextureLibrary.GetTexture("hidden cell");
+        CellTextures.Add((new([CellTag.HasShip, CellTag.Shot]), TextureLibrary.GetTexture("shot ship cell")));
+        CellTextures.Add((new([CellTag.HasShip]), TextureLibrary.GetTexture("ship cell")));
+        CellTextures.Add((new([]), TextureLibrary.GetTexture("empty cell")));
+    }
     
     public static MapCell CreateCell(Vector2f spritePosition)
     {
@@ -70,6 +74,9 @@ public class MapCell : Node
         _state.Add(tag);
         UpdateTexture();
     }   
+    
+    public bool HasTag(CellTag tag)
+        => _state.Has(tag);
 
     public ShootingResult GetShot()
     {
@@ -89,7 +96,7 @@ public class MapCell : Node
             return;
         if (_isHidden)
         {
-            _sprite.Texture = HiddenTexture;
+            _sprite.Texture = _hiddenTexture;
             return;
         }
         
