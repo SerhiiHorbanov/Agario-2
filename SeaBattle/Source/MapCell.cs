@@ -21,9 +21,6 @@ public class MapCell : Node
     private static Texture _hiddenTexture;
     private static readonly List<(CellState, Texture)> CellTextures = [];
 
-    private bool IsShot
-        => _state.IsShot;
-
     public bool IsHidden
     {
         set
@@ -82,7 +79,7 @@ public class MapCell : Node
 
     public ShootingResult GetShot()
     {
-        if (IsShot)
+        if (HasTag(CellTag.Shot))
             return ShootingResult.Miss;
         
         AddTag(CellTag.Shot);

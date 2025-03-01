@@ -9,10 +9,10 @@ namespace SeaBattle;
 
 public class SeaBattleGameRules : Node
 {
-    private PlayerMap _firstPlayer;
-    private PlayerMap _secondPlayer;
-    private PlayerMap _activePlayer;
-    private PlayerMap _waitingPlayer;
+    private PlayerMap _firstPlayerMap;
+    private PlayerMap _secondPlayerMap;
+    private PlayerMap _activePlayerMap;
+    private PlayerMap _waitingPlayerMap;
     
     public static Action _endGame;
     
@@ -26,11 +26,11 @@ public class SeaBattleGameRules : Node
     {
         SeaBattleGameRules rules = new();
         
-        rules._firstPlayer = first;
-        rules._secondPlayer = second;
-        rules._activePlayer = rules._firstPlayer;
-        rules._waitingPlayer = rules._secondPlayer;
-        rules._waitingPlayer.IsHidden = true;
+        rules._firstPlayerMap = first;
+        rules._secondPlayerMap = second;
+        rules._activePlayerMap = rules._firstPlayerMap;
+        rules._waitingPlayerMap = rules._secondPlayerMap;
+        rules._waitingPlayerMap.IsHidden = true;
 
         _endGame = closeWindow;
         
@@ -53,11 +53,11 @@ public class SeaBattleGameRules : Node
 
     private void Shoot()
     {
-        ShootingResult shootingResult = _waitingPlayer.ShootAtCursor();
+        ShootingResult shootingResult = _waitingPlayerMap.ShootAtCursor();
         
         if (shootingResult == ShootingResult.Hit)
         {
-            if (!_waitingPlayer.HasNotShotShip())
+            if (!_waitingPlayerMap.HasNotShotShip())
                 _endGame();
             return;
         }
@@ -67,9 +67,9 @@ public class SeaBattleGameRules : Node
 
     private void SwapPlayersForNextTurn()
     {
-        (_activePlayer, _waitingPlayer) = (_waitingPlayer, _activePlayer);
-        _activePlayer.IsHidden = false;
-        _waitingPlayer.IsHidden = true;
+        (_activePlayerMap, _waitingPlayerMap) = (_waitingPlayerMap, _activePlayerMap);
+        _activePlayerMap.IsHidden = false;
+        _waitingPlayerMap.IsHidden = true;
     }
 
     private void EnsureKeyBindSet(InputListener global, string name, Keyboard.Key key, Action callback)
@@ -84,8 +84,8 @@ public class SeaBattleGameRules : Node
 
     private void MoveCursor(Vector2i delta)
     {
-        _firstPlayer.MoveCursor(delta);
-        _secondPlayer.MoveCursor(delta);
+        _activePlayerMap.MoveCursor(delta);
+        _waitingPlayerMap.MoveCursor(delta);
     }
     
     private void GoUp()

@@ -5,7 +5,6 @@ namespace SeaBattle;
 public enum CellTag
 {
     HasShip,
-    HasMine,
     Shot,
 }
 
