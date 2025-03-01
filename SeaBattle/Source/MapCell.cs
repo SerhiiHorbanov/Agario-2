@@ -38,6 +38,12 @@ public class MapCell : Node
             UpdateTexture();
         }
     }
+
+    public Color Color
+    {
+        get => _sprite.Sprite.Color;
+        set => _sprite.Sprite.Color = value;
+    }
     
     private MapCell(CellState state)
     {
