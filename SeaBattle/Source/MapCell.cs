@@ -30,7 +30,8 @@ public class MapCell : Node
         {
             if (_isHidden == value)
                 return;
-            _isHidden = value;
+            
+            _isHidden = value && !HasTag(CellTag.Shot);
             UpdateTexture();
         }
     }
@@ -52,6 +53,7 @@ public class MapCell : Node
         _hiddenTexture = TextureLibrary.GetTexture("hidden cell");
         CellTextures.Add((new([CellTag.HasShip, CellTag.Shot]), TextureLibrary.GetTexture("shot ship cell")));
         CellTextures.Add((new([CellTag.HasShip]), TextureLibrary.GetTexture("ship cell")));
+        CellTextures.Add((new([CellTag.Shot]), TextureLibrary.GetTexture("empty cell")));
         CellTextures.Add((new([]), TextureLibrary.GetTexture("empty cell")));
     }
     
