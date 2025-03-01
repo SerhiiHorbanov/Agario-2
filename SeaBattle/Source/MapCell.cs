@@ -13,23 +13,36 @@ public enum ShootingResult
 
 public class MapCell : Node
 {
-
     private SpriteNode _sprite;
     private readonly CellState _state;
+    private bool _isHidden;
 
-    private static readonly (CellState, Texture)[] CellTextures = new[]
-    {
-        ( new CellState([CellTag.HasShip, CellTag.Shot]), new Texture("Resources/Textures/Cells/Shot ship.png") ),
-        ( new ([CellTag.HasShip]), new("Resources/Textures/Cells/Ship.png") ),
-        ( new ([]), new("Resources/Textures/Cells/Empty.png") ),
-    };
+    private static readonly Texture HiddenTexture = new Texture("Resources/Textures/Cells/Hidden.png");
+    private static readonly (CellState, Texture)[] CellTextures =
+    [
+        (new([CellTag.HasShip, CellTag.Shot]), new("Resources/Textures/Cells/Shot ship.png")),
+        (new([CellTag.HasShip]), new("Resources/Textures/Cells/Ship.png")),
+        (new([]), new("Resources/Textures/Cells/Empty.png")),
+    ];
 
     private bool IsShot
         => _state.IsShot;
+
+    public bool IsHidden
+    {
+        set
+        {
+            if (_isHidden == value)
+                return;
+            _isHidden = value;
+            UpdateTexture();
+        }
+    }
     
     private MapCell(CellState state)
     {
         _state = state;
+        _isHidden = false;
     }
     
     public static MapCell CreateCell(Vector2f spritePosition)
@@ -66,7 +79,12 @@ public class MapCell : Node
     {
         if (_sprite == null)
             return;
-
+        if (_isHidden)
+        {
+            _sprite.Texture = HiddenTexture;
+            return;
+        }
+        
         _sprite.Texture = GetTexture(_state);
     }
 
