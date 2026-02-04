@@ -7,20 +7,16 @@ public class Node : IEnumerable<Node>
 {
     private readonly List<Node> _children;
     public Node Parent { get; private set; }
-
-    private bool _isKilled;
-
+    public bool IsKilled { get; private set; }
     internal bool IsInScene;
     
     private bool IsRoot
         => Parent == this;
-    public bool IsKilled
-        => _isKilled;
 
     protected Node()
     {
         IsInScene = this is SceneNode;
-        _isKilled = false;
+        IsKilled = false;
         _children = new();
         Parent = this;
     }
@@ -117,7 +113,7 @@ public class Node : IEnumerable<Node>
         => Parent.DetachChild(this);
 
     public void Kill()
-        => _isKilled = true;
+        => IsKilled = true;
 
     public void KillImmediately()
     {
@@ -135,7 +131,7 @@ public class Node : IEnumerable<Node>
         {
             Node child = _children[i];
 
-            if (child._isKilled)
+            if (child.IsKilled)
             {
                 child.KillImmediately();
                 i--;
